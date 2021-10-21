@@ -450,7 +450,7 @@
     <dimen name="system_icons_super_container_margin_start">16dp</dimen>
 
     <!-- Margin end of the system icons super container when the avatar is missing. -->
-    <dimen name="system_icons_super_container_avatarless_margin_end">6dp</dimen>
+    <dimen name="system_icons_super_container_avatarless_margin_end">0dp</dimen>
 
     <!-- Width for the notification panel and related windows -->
     <dimen name="match_parent">-1px</dimen>
@@ -760,7 +760,7 @@
     <item name="keyguard_clock_line_spacing_scale_burmese" type="dimen" format="float">1</item>
 
     <item name="scrim_behind_alpha" format="float" type="dimen">0.62</item>
-    <dimen name="notification_scrim_corner_radius">32dp</dimen>
+    <dimen name="notification_scrim_corner_radius">0dp</dimen>
 
     <!-- The minimum amount the user needs to swipe to go to the camera / phone. -->
     <dimen name="keyguard_min_swipe_amount">110dp</dimen>
@@ -871,7 +871,7 @@
     <dimen name="kg_framed_avatar_size">32dp</dimen>
 
     <!-- Margin on the left side of the carrier text on Keyguard -->
-    <dimen name="keyguard_carrier_text_margin">16dp</dimen>
+    <dimen name="keyguard_carrier_text_margin">@dimen/status_bar_padding_start</dimen>
 
     <!-- Margin on the left side of the battery % in the header. -->
     <dimen name="header_battery_margin_expanded">6dp</dimen>
@@ -880,7 +880,7 @@
     <dimen name="header_battery_margin_keyguard">6dp</dimen>
 
     <!-- Margin on the right side of the system icon group on Keyguard. -->
-    <dimen name="system_icons_keyguard_padding_end">4dp</dimen>
+    <dimen name="system_icons_keyguard_padding_end">@dimen/status_bar_padding_end</dimen>
 
     <!-- Additional translation (downwards) for appearing notifications when going to the full shade
          from Keyguard. -->
@@ -923,7 +923,7 @@
     <dimen name="keyguard_lock_width">42dp</dimen>
     <dimen name="keyguard_lock_padding">20dp</dimen>
 
-    <dimen name="keyguard_indication_margin_bottom">32dp</dimen>
+    <dimen name="keyguard_indication_margin_bottom">16dp</dimen>
     <dimen name="lock_icon_margin_bottom">98dp</dimen>
 
     <!-- The text size for battery level -->
@@ -1270,8 +1270,6 @@
     <!--  Three privacy items. This value must not be exceeded  -->
     <dimen name="ongoing_appops_chip_max_width">76dp</dimen>
     <dimen name="ongoing_appops_dot_diameter">6dp</dimen>
-    <!--  Total minimum padding to enforce to ensure that the dot can always show  -->
-    <dimen name="ongoing_appops_dot_min_padding">20dp</dimen>
 
     <dimen name="ongoing_appops_dialog_side_margins">@dimen/notification_shade_content_margin_horizontal</dimen>
 

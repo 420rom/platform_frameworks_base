@@ -161,23 +161,12 @@ public class KeyguardStatusBarView extends RelativeLayout implements
         lp.setMarginStart(getResources().getDimensionPixelSize(
                 R.dimen.system_icons_super_container_margin_start));
         mSystemIconsContainer.setLayoutParams(lp);
-        mSystemIconsContainer.setPaddingRelative(mSystemIconsContainer.getPaddingStart(),
-                mSystemIconsContainer.getPaddingTop(),
-                getResources().getDimensionPixelSize(R.dimen.system_icons_keyguard_padding_end),
-                mSystemIconsContainer.getPaddingBottom());
 
         // Respect font size setting.
         mCarrierLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimensionPixelSize(
                         com.android.internal.R.dimen.text_size_small_material));
-        lp = (MarginLayoutParams) mCarrierLabel.getLayoutParams();
 
-        int marginStart = calculateMargin(
-                getResources().getDimensionPixelSize(R.dimen.keyguard_carrier_text_margin),
-                mPadding.first);
-        lp.setMarginStart(marginStart);
-
-        mCarrierLabel.setLayoutParams(lp);
         updateKeyguardStatusBarHeight();
     }
 
@@ -207,8 +196,6 @@ public class KeyguardStatusBarView extends RelativeLayout implements
     // Set hidden status bar items
     private void loadBlockList() {
         Resources r = getResources();
-        mBlockedIcons.add(r.getString(com.android.internal.R.string.status_bar_volume));
-        mBlockedIcons.add(r.getString(com.android.internal.R.string.status_bar_alarm_clock));
         mBlockedIcons.add(r.getString(com.android.internal.R.string.status_bar_call_strength));
     }
 

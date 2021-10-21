@@ -1604,7 +1604,7 @@ public class DisplayPolicy {
             pf.set((fl & FLAG_LAYOUT_IN_SCREEN) == 0 ? attached.getFrame() : df);
         }
 
-        final int cutoutMode = attrs.layoutInDisplayCutoutMode;
+        final int cutoutMode = LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
         // Ensure that windows with a DEFAULT or NEVER display cutout mode are laid out in
         // the cutout safe zone.
         if (cutoutMode != LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS) {
@@ -2334,9 +2334,10 @@ public class DisplayPolicy {
     @NavigationBarPosition
     int navigationBarPosition(int displayWidth, int displayHeight, int displayRotation) {
         if (navigationBarCanMove() && displayWidth > displayHeight) {
-            if (displayRotation == Surface.ROTATION_270) {
+            boolean isSeascapeDisabled = SystemProperties.getBoolean("persist.ui.seascape.disable", false);
+            if (displayRotation == Surface.ROTATION_270 && !isSeascapeDisabled) {
                 return NAV_BAR_LEFT;
-            } else if (displayRotation == Surface.ROTATION_90) {
+            } else {
                 return NAV_BAR_RIGHT;
             }
         }
