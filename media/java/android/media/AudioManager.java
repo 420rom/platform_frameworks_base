@@ -2325,9 +2325,10 @@ public class AudioManager {
         return AudioSystem.SUCCESS;
     }
 
-    private final Map<Integer, Object> mDevRoleForCapturePresetListeners = Map.of(
-            AudioSystem.DEVICE_ROLE_PREFERRED,
-            new DevRoleListeners<OnPreferredDevicesForCapturePresetChangedListener>());
+    private final Map<Integer, Object> mDevRoleForCapturePresetListeners = new HashMap<>(){{
+            put(AudioSystem.DEVICE_ROLE_PREFERRED,
+                    new DevRoleListeners<OnPreferredDevicesForCapturePresetChangedListener>());
+        }};
 
     private class DevRoleListenerInfo<T> {
         final @NonNull Executor mExecutor;
@@ -6482,17 +6483,15 @@ public class AudioManager {
     // AudioPort implementation
     //
 
-    private static final int AUDIOPORT_GENERATION_INIT = 0;
-    private static Object sAudioPortGenerationLock = new Object();
-    @GuardedBy("sAudioPortGenerationLock")
-    private static int sAudioPortGeneration = AUDIOPORT_GENERATION_INIT;
-    private static ArrayList<AudioPort> sAudioPortsCached = new ArrayList<AudioPort>();
-    private static ArrayList<AudioPort> sPreviousAudioPortsCached = new ArrayList<AudioPort>();
-    private static ArrayList<AudioPatch> sAudioPatchesCached = new ArrayList<AudioPatch>();
+    static final int AUDIOPORT_GENERATION_INIT = 0;
+    static Integer sAudioPortGeneration = new Integer(AUDIOPORT_GENERATION_INIT);
+    static ArrayList<AudioPort> sAudioPortsCached = new ArrayList<AudioPort>();
+    static ArrayList<AudioPort> sPreviousAudioPortsCached = new ArrayList<AudioPort>();
+    static ArrayList<AudioPatch> sAudioPatchesCached = new ArrayList<AudioPatch>();
 
     static int resetAudioPortGeneration() {
         int generation;
-        synchronized (sAudioPortGenerationLock) {
+        synchronized (sAudioPortGeneration) {
             generation = sAudioPortGeneration;
             sAudioPortGeneration = AUDIOPORT_GENERATION_INIT;
         }
@@ -6502,7 +6501,7 @@ public class AudioManager {
     static int updateAudioPortCache(ArrayList<AudioPort> ports, ArrayList<AudioPatch> patches,
                                     ArrayList<AudioPort> previousPorts) {
         sAudioPortEventHandler.init();
-        synchronized (sAudioPortGenerationLock) {
+        synchronized (sAudioPortGeneration) {
 
             if (sAudioPortGeneration == AUDIOPORT_GENERATION_INIT) {
                 int[] patchGeneration = new int[1];
@@ -6601,8 +6600,8 @@ public class AudioManager {
             }
         }
         if (k == ports.size()) {
-            // This can happen in case of stale audio patch referring to a removed device and is
-            // handled by the caller.
+            // this hould never happen
+            Log.e(TAG, "updatePortConfig port not found for handle: "+port.handle().id());
             return null;
         }
         AudioGainConfig gainCfg = portCfg.gain();
@@ -8462,14 +8461,13 @@ public class AudioManager {
     }
 
     /**
-     * Returns an {@link AudioHalVersionInfo} indicating the Audio Hal Version. If there is no audio
-     * HAL found, null will be returned.
+     * Returns the audio HAL version in the form MAJOR.MINOR. If there is no audio HAL found, null
+     * will be returned.
      *
-     * @return @see @link #AudioHalVersionInfo The version of Audio HAL.
      * @hide
      */
     @TestApi
-    public static @Nullable AudioHalVersionInfo getHalVersion() {
+    public static @Nullable String getHalVersion() {
         try {
             return getService().getHalVersion();
         } catch (RemoteException e) {

@@ -36,6 +36,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Slog;
 
+import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.HexDump;
@@ -44,8 +45,8 @@ import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -154,7 +155,7 @@ class WatchlistLoggingHandler extends Handler {
         try {
             final String[] packageNames = mPm.getPackagesForUid(uid);
             if (packageNames == null || packageNames.length == 0) {
-                Slog.e(TAG, "Couldn't find package: " + Arrays.toString(packageNames));
+                Slog.e(TAG, "Couldn't find package: " + packageNames);
                 return false;
             }
             ai = mPm.getApplicationInfo(packageNames[0], 0);

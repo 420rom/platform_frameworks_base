@@ -21,6 +21,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"B"</string>
+    <string name="kilobyteShort" msgid="2214285521564195803">"के.बि."</string>
+    <string name="megabyteShort" msgid="6649361267635823443">"MB"</string>
+    <string name="gigabyteShort" msgid="7515809460261287991">"GB"</string>
+    <string name="terabyteShort" msgid="1822367128583886496">"TB"</string>
+    <string name="petabyteShort" msgid="5651571254228534832">"PB"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;बिना शीर्षक&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"(कुनै फोन नम्बर छैन)"</string>
@@ -1608,7 +1613,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"टिभी"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"फोन"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"डक स्पिकरहरू"</string>
-    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"बााह्य डिभाइस"</string>
+    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"हेडफोनहरू"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"प्रणाली"</string>
@@ -2046,7 +2051,8 @@
     <string name="log_access_confirmation_allow" msgid="5302517782599389507">"एक पटक प्रयोग गर्ने अनुमति दिनुहोस्"</string>
     <string name="log_access_confirmation_deny" msgid="7685790957455099845">"अनुमति नदिनुहोस्"</string>
     <string name="log_access_confirmation_body" product="default" msgid="1806692062668620735">"डिभाइसका लगले तपाईंको डिभाइसमा भएका विभिन्न गतिविधिको अभिलेख राख्छ। एपहरू यी लगका आधारमा समस्या पत्ता लगाउन र तिनको समाधान गर्न सक्छन्।\n\nकेही लगहरूमा संवेदनशील जानकारी समावेश हुन सक्ने भएकाले आफूले भरोसा गर्ने एपलाई मात्र डिभाइसका सबै लग हेर्ने अनुमति दिनुहोस्। \n\nतपाईंले यो एपलाई डिभाइसका सबै लग हेर्ने अनुमति दिनुभएन भने पनि यसले आफ्नै लग भने हेर्न सक्छ। तपाईंको डिभाइसको उत्पादकले पनि तपाईंको डिभाइसमा भएका केही लग वा जानकारी हेर्न सक्ने सम्भावना हुन्छ।"</string>
-    <string name="log_access_confirmation_body" product="tv" msgid="7379536536425265262">"डिभाइसका लगले तपाईंको डिभाइसमा भएका विभिन्न गतिविधिको अभिलेख राख्छ। एपहरू यी लगका आधारमा समस्या पत्ता लगाउन र तिनको समाधान गर्न सक्छन्।\n\nकेही लगहरूमा संवेदनशील जानकारी समावेश हुन सक्ने भएकाले आफूले भरोसा गर्ने एपलाई मात्र डिभाइसका सबै लग हेर्ने अनुमति दिनुहोस्। \n\nतपाईंले यो एपलाई डिभाइसका सबै लग हेर्ने अनुमति दिनुभएन भने पनि यसले आफ्नै लग भने हेर्न सक्छ। तपाईंको डिभाइसको उत्पादकले पनि तपाईंको डिभाइसमा भएका केही लग वा जानकारी हेर्न सक्ने सम्भावना हुन्छ।\n\nतपाईं यस सम्बन्धमा थप जान्न चाहनुहुन्छ भने g.co/android/devicelogs मा जानुहोस्।"</string>
+    <!-- no translation found for log_access_confirmation_body (7379536536425265262) -->
+    <skip />
     <string name="log_access_do_not_show_again" msgid="1058690599083091552">"फेरि नदेखाइयोस्"</string>
     <string name="slices_permission_request" msgid="3677129866636153406">"<xliff:g id="APP_0">%1$s</xliff:g> ले <xliff:g id="APP_2">%2$s</xliff:g> का स्लाइसहरू देखाउन चाहन्छ"</string>
     <string name="screenshot_edit" msgid="7408934887203689207">"सम्पादन गर्नुहोस्"</string>

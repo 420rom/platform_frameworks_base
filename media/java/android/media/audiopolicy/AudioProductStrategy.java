@@ -32,7 +32,6 @@ import com.android.internal.annotations.GuardedBy;
 import com.android.internal.util.Preconditions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -183,7 +182,7 @@ public final class AudioProductStrategy implements Parcelable {
         AudioProductStrategy thatStrategy = (AudioProductStrategy) o;
 
         return mName == thatStrategy.mName && mId == thatStrategy.mId
-                && Arrays.equals(mAudioAttributesGroups, thatStrategy.mAudioAttributesGroups);
+                && mAudioAttributesGroups.equals(thatStrategy.mAudioAttributesGroups);
     }
 
     /**
@@ -416,7 +415,7 @@ public final class AudioProductStrategy implements Parcelable {
 
             return mVolumeGroupId == thatAag.mVolumeGroupId
                     && mLegacyStreamType == thatAag.mLegacyStreamType
-                    && Arrays.equals(mAudioAttributes, thatAag.mAudioAttributes);
+                    && mAudioAttributes.equals(thatAag.mAudioAttributes);
         }
 
         public int getStreamType() {

@@ -447,7 +447,7 @@ class MultiFingerSwipe extends GestureMatcher {
         StringBuilder builder = new StringBuilder(super.toString());
         if (getState() != STATE_GESTURE_CANCELED) {
             builder.append(", mBase: ")
-                    .append(Arrays.toString(mBase))
+                    .append(mBase.toString())
                     .append(", mMinPixelsBetweenSamplesX:")
                     .append(mMinPixelsBetweenSamplesX)
                     .append(", mMinPixelsBetweenSamplesY:")

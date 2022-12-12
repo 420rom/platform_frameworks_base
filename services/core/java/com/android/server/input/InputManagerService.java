@@ -1804,8 +1804,8 @@ public class InputManagerService extends IInputManager.Stub
      */
     public boolean transferTouchFocus(@NonNull IBinder fromChannelToken,
             @NonNull IBinder toChannelToken) {
-        Objects.requireNonNull(fromChannelToken);
-        Objects.requireNonNull(toChannelToken);
+        Objects.nonNull(fromChannelToken);
+        Objects.nonNull(toChannelToken);
         return mNative.transferTouchFocus(fromChannelToken, toChannelToken,
                 false /* isDragDrop */);
     }

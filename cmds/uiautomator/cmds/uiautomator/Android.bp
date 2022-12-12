@@ -25,7 +25,7 @@ package {
 
 java_binary {
     name: "uiautomator",
-    wrapper: "uiautomator.sh",
+    wrapper: "uiautomator",
     srcs: ["src/**/*.java"],
     static_libs: ["uiautomator.core"],
 }

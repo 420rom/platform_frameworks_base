@@ -517,6 +517,7 @@ public class InternalResourceService extends SystemService {
                     removedPkgs.add(pkgInfo.packageName);
                     mUidToPackageCache.remove(pkgInfo.applicationInfo.uid);
                     mPkgCache.remove(i);
+                    break;
                 }
             }
             mAgent.onUserRemovedLocked(userId, removedPkgs);

@@ -1111,6 +1111,7 @@ public class PermissionManagerService extends IPermissionManager.Stub {
                     appOpsManager.finishProxyOp(AppOpsManager.opToPublicName(op),
                             resolvedAttributionSource, skipCurrentFinish);
                 }
+
                 RegisteredAttribution registered =
                         sRunningAttributionSources.remove(current.getToken());
                 if (registered != null) {

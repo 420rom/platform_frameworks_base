@@ -222,7 +222,7 @@ android_library {
         "metrics-helper-lib",
         "hamcrest-library",
         "androidx.test.rules",
-        "androidx.test.uiautomator_uiautomator",
+        "androidx.test.uiautomator",
         "mockito-target-extended-minus-junit4",
         "testables",
         "truth-prebuilt",
@@ -244,9 +244,6 @@ android_library {
         "com.android.systemui",
     ],
     plugins: ["dagger2-compiler"],
-    lint: {
-        test: true,
-    },
 }
 
 // Opt-out config for optimizing the SystemUI target using R8.

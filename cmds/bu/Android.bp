@@ -20,6 +20,6 @@ license {
 
 java_binary {
     name: "bu",
-    wrapper: "bu.sh",
+    wrapper: "bu",
     srcs: ["**/*.java"],
 }

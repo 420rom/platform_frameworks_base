@@ -42,6 +42,7 @@ import android.app.smartspace.SmartspaceManager;
 import android.app.time.TimeManager;
 import android.app.timedetector.TimeDetector;
 import android.app.timedetector.TimeDetectorImpl;
+import android.app.timezone.RulesManager;
 import android.app.timezonedetector.TimeZoneDetector;
 import android.app.timezonedetector.TimeZoneDetectorImpl;
 import android.app.trust.TrustManager;
@@ -144,6 +145,8 @@ import android.net.NetworkWatchlistManager;
 import android.net.PacProxyManager;
 import android.net.TetheringManager;
 import android.net.VpnManager;
+import android.net.lowpan.ILowpanManager;
+import android.net.lowpan.LowpanManager;
 import android.net.vcn.IVcnManagementService;
 import android.net.vcn.VcnManager;
 import android.net.wifi.WifiFrameworkInitializer;
@@ -168,7 +171,6 @@ import android.os.IThermalService;
 import android.os.IUserManager;
 import android.os.IncidentManager;
 import android.os.PerformanceHintManager;
-import android.os.PermissionEnforcer;
 import android.os.PowerManager;
 import android.os.RecoverySystem;
 import android.os.ServiceManager;
@@ -205,7 +207,6 @@ import android.service.oemlock.OemLockManager;
 import android.service.persistentdata.IPersistentDataBlockService;
 import android.service.persistentdata.PersistentDataBlockManager;
 import android.service.vr.IVrManager;
-import android.system.virtualmachine.VirtualizationFrameworkInitializer;
 import android.telecom.TelecomManager;
 import android.telephony.MmsManager;
 import android.telephony.TelephonyFrameworkInitializer;
@@ -765,6 +766,15 @@ public final class SystemServiceRegistry {
                         ctx.mMainThread.getHandler());
             }});
 
+        registerService(Context.LOWPAN_SERVICE, LowpanManager.class,
+                new CachedServiceFetcher<LowpanManager>() {
+            @Override
+            public LowpanManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+                IBinder b = ServiceManager.getServiceOrThrow(Context.LOWPAN_SERVICE);
+                ILowpanManager service = ILowpanManager.Stub.asInterface(b);
+                return new LowpanManager(ctx.getOuterContext(), service);
+            }});
+
         registerService(Context.WIFI_NL80211_SERVICE, WifiNl80211Manager.class,
                 new CachedServiceFetcher<WifiNl80211Manager>() {
                     @Override
@@ -1254,6 +1264,13 @@ public final class SystemServiceRegistry {
             }
         });
 
+        registerService(Context.TIME_ZONE_RULES_MANAGER_SERVICE, RulesManager.class,
+                new CachedServiceFetcher<RulesManager>() {
+            @Override
+            public RulesManager createService(ContextImpl ctx) {
+                return new RulesManager(ctx.getOuterContext());
+            }});
+
         registerService(Context.CROSS_PROFILE_APPS_SERVICE, CrossProfileApps.class,
                 new CachedServiceFetcher<CrossProfileApps>() {
                     @Override
@@ -1330,14 +1347,6 @@ public final class SystemServiceRegistry {
                     public PermissionCheckerManager createService(ContextImpl ctx)
                             throws ServiceNotFoundException {
                         return new PermissionCheckerManager(ctx.getOuterContext());
-                    }});
-
-        registerService(Context.PERMISSION_ENFORCER_SERVICE, PermissionEnforcer.class,
-                new CachedServiceFetcher<PermissionEnforcer>() {
-                    @Override
-                    public PermissionEnforcer createService(ContextImpl ctx)
-                            throws ServiceNotFoundException {
-                        return new PermissionEnforcer(ctx.getOuterContext());
                     }});
 
         registerService(Context.DYNAMIC_SYSTEM_SERVICE, DynamicSystemManager.class,
@@ -1529,7 +1538,6 @@ public final class SystemServiceRegistry {
             ConnectivityFrameworkInitializerTiramisu.registerServiceWrappers();
             NearbyFrameworkInitializer.registerServiceWrappers();
             OnDevicePersonalizationFrameworkInitializer.registerServiceWrappers();
-            VirtualizationFrameworkInitializer.registerServiceWrappers();
         } finally {
             // If any of the above code throws, we're in a pretty bad shape and the process
             // will likely crash, but we'll reset it just in case there's an exception handler...
@@ -1574,7 +1582,6 @@ public final class SystemServiceRegistry {
                 case Context.APP_PREDICTION_SERVICE:
                 case Context.INCREMENTAL_SERVICE:
                 case Context.ETHERNET_SERVICE:
-                case Context.VIRTUALIZATION_SERVICE:
                     return null;
             }
             Slog.wtf(TAG, "Manager wrapper not available: " + name);

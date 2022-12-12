@@ -203,15 +203,6 @@ public final class DeviceConfig {
     @SystemApi
     public static final String NAMESPACE_TETHERING = "tethering";
 
-
-    /**
-     * Namespace for Nearby module.
-     *
-     * @hide
-     */
-    @SystemApi
-    public static final String NAMESPACE_NEARBY = "nearby";
-
     /**
      * Namespace for content capture feature used by on-device machine intelligence
      * to provide suggestions in a privacy-safe manner.
@@ -322,13 +313,6 @@ public final class DeviceConfig {
     public static final String NAMESPACE_MEDIA_NATIVE = "media_native";
 
     /**
-     * Namespace for all Kernel Multi-Gen LRU feature.
-     *
-     * @hide
-     */
-    public static final String NAMESPACE_MGLRU_NATIVE = "mglru_native";
-
-    /**
      * Namespace for all netd related features.
      *
      * @hide
@@ -375,14 +359,6 @@ public final class DeviceConfig {
      */
     @SystemApi
     public static final String NAMESPACE_REBOOT_READINESS = "reboot_readiness";
-
-    /**
-     * Namespace for Remote Key Provisioning related features.
-     *
-     * @hide
-     */
-    public static final String NAMESPACE_REMOTE_KEY_PROVISIONING_NATIVE =
-            "remote_key_provisioning_native";
 
     /**
      * Namespace for Rollback flags that are applied immediately.

@@ -20,6 +20,6 @@ license {
 
 java_binary {
     name: "bmgr",
-    wrapper: "bmgr.sh",
+    wrapper: "bmgr",
     srcs: ["**/*.java"],
 }

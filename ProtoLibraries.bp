@@ -14,6 +14,7 @@
 
 gensrcs {
     name: "framework-javastream-protos",
+    depfile: true,
 
     tools: [
         "aprotoc",
@@ -21,13 +22,10 @@ gensrcs {
         "soong_zip",
     ],
 
-    tool_files: [
-        ":libprotobuf-internal-protos",
-    ],
-
     cmd: "mkdir -p $(genDir)/$(in) " +
         "&& $(location aprotoc) " +
         "  --plugin=$(location protoc-gen-javastream) " +
+        "  --dependency_out=$(depfile) " +
         "  --javastream_out=$(genDir)/$(in) " +
         "  -Iexternal/protobuf/src " +
         "  -I . " +
@@ -35,6 +33,7 @@ gensrcs {
         "&& $(location soong_zip) -jar -o $(out) -C $(genDir)/$(in) -D $(genDir)/$(in)",
 
     srcs: [
+        ":framework-connectivity-protos",
         ":ipconnectivity-proto-src",
         ":libstats_atom_enum_protos",
         ":libstats_atom_message_protos",
@@ -48,25 +47,24 @@ gensrcs {
 
 gensrcs {
     name: "framework-cppstream-protos",
+    depfile: true,
 
     tools: [
         "aprotoc",
         "protoc-gen-cppstream",
     ],
 
-    tool_files: [
-        ":libprotobuf-internal-protos",
-    ],
-
     cmd: "mkdir -p $(genDir) " +
         "&& $(location aprotoc) " +
         "  --plugin=$(location protoc-gen-cppstream) " +
+        "  --dependency_out=$(depfile) " +
         "  --cppstream_out=$(genDir) " +
         "  -Iexternal/protobuf/src " +
         "  -I . " +
         "  $(in)",
 
     srcs: [
+        ":framework-connectivity-protos",
         ":ipconnectivity-proto-src",
         ":libstats_atom_enum_protos",
         ":libstats_atom_message_protos",
@@ -82,6 +80,7 @@ gensrcs {
 java_library_host {
     name: "platformprotos",
     srcs: [
+        ":framework-connectivity-protos",
         ":ipconnectivity-proto-src",
         ":libstats_atom_enum_protos",
         ":libstats_atom_message_protos",
@@ -121,6 +120,7 @@ java_library {
     ],
     sdk_version: "9",
     srcs: [
+        ":framework-connectivity-protos",
         ":ipconnectivity-proto-src",
         ":libstats_atom_enum_protos",
         ":libstats_atom_message_protos",
@@ -143,6 +143,7 @@ java_library {
     },
 
     srcs: [
+        ":framework-connectivity-protos",
         ":ipconnectivity-proto-src",
         ":libstats_atom_enum_protos",
         ":libstats_atom_message_protos",
@@ -180,6 +181,7 @@ cc_defaults {
     ],
 
     srcs: [
+        ":framework-connectivity-protos",
         ":ipconnectivity-proto-src",
         ":libstats_atom_enum_protos",
         ":libstats_atom_message_protos",

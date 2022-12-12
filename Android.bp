@@ -72,6 +72,7 @@ filegroup {
         ":framework-keystore-sources",
         ":framework-identity-sources",
         ":framework-location-sources",
+        ":framework-lowpan-sources",
         ":framework-mca-effect-sources",
         ":framework-mca-filterfw-sources",
         ":framework-mca-filterpacks-sources",
@@ -97,7 +98,7 @@ filegroup {
         // AIDL sources from external directories
         ":android.hardware.gnss-V2-java-source",
         ":android.hardware.graphics.common-V3-java-source",
-        ":android.hardware.security.keymint-V3-java-source",
+        ":android.hardware.security.keymint-V2-java-source",
         ":android.hardware.security.secureclock-V1-java-source",
         ":android.hardware.tv.tuner-V1-java-source",
         ":android.security.apc-java-source",
@@ -105,7 +106,7 @@ filegroup {
         ":android.security.legacykeystore-java-source",
         ":android.security.maintenance-java-source",
         ":android.security.metrics-java-source",
-        ":android.system.keystore2-V3-java-source",
+        ":android.system.keystore2-V1-java-source",
         ":credstore_aidl",
         ":dumpstate_aidl",
         ":framework_native_aidl",
@@ -152,9 +153,6 @@ java_library {
     visibility: [
         // DO NOT ADD ANY MORE ENTRIES TO THIS LIST
         "//external/robolectric-shadows:__subpackages__",
-        //This will eventually replace the item above, and serves the
-        //same purpose.
-        "//external/robolectric:__subpackages__",
         "//frameworks/layoutlib:__subpackages__",
     ],
 }
@@ -171,6 +169,7 @@ java_defaults {
             "identity/java",
             "keystore/java",
             "location/java",
+            "lowpan/java",
             "media/java",
             "media/mca/effect/java",
             "media/mca/filterfw/java",
@@ -261,10 +260,7 @@ filegroup {
 
 java_defaults {
     name: "framework-minus-apex-defaults",
-    defaults: [
-        "framework-aidl-export-defaults",
-        "latest_android_hardware_soundtrigger3_java_static",
-    ],
+    defaults: ["framework-aidl-export-defaults"],
     srcs: [
         ":framework-non-updatable-sources",
         "core/java/**/*.logtags",
@@ -295,14 +291,6 @@ java_defaults {
         "staledataclass-annotation-processor",
         "error_prone_android_framework",
     ],
-    // Exports needed for staledataclass-annotation-processor, see b/139342589.
-    javacflags: [
-        "-J--add-modules=jdk.compiler",
-        "-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
-        "-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED",
-        "-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
-        "-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
-    ],
     required: [
         // TODO(b/120066492): remove default_television.xml when the build system
         // propagates "required" properly.
@@ -320,7 +308,6 @@ java_defaults {
         "contacts-provider-platform-compat-config",
     ],
     libs: [
-        "androidx.annotation_annotation",
         "app-compat-annotations",
         "ext",
         "framework-updatable-stubs-module_libs_api",
@@ -329,6 +316,8 @@ java_defaults {
     sdk_version: "core_platform",
     static_libs: [
         "android.hardware.common.fmq-V1-java",
+        // TODO(b/184162091)
+        "android.hardware.soundtrigger3-V1-java",
         "bouncycastle-repackaged-unbundled",
         "framework-internal-utils",
         // If MimeMap ever becomes its own APEX, then this dependency would need to be removed
@@ -339,7 +328,6 @@ java_defaults {
         "soundtrigger_middleware-aidl-java",
         "modules-utils-build",
         "modules-utils-preconditions",
-        "modules-utils-statemachine",
         "modules-utils-synchronous-result-receiver",
         "modules-utils-os",
         "modules-utils-uieventlogger-interface",
@@ -381,15 +369,6 @@ java_library {
     name: "framework-minus-apex-intdefs",
     defaults: ["framework-minus-apex-defaults"],
     plugins: ["intdef-annotation-processor"],
-
-    // Errorprone and android lint will already run on framework-minus-apex, don't rerun them on
-    // the intdefs version in order to speed up the build.
-    errorprone: {
-        enabled: false,
-    },
-    lint: {
-        enabled: false,
-    },
 }
 
 // This "framework" module is NOT installed to the device. It's

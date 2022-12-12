@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2012, The CyanogenMod Project
- * Copyright (c) 2018, 420rom
+ * Copyright (c) 2018, The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

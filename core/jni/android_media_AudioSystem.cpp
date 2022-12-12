@@ -2179,7 +2179,7 @@ static jint convertAudioMixToNative(JNIEnv *env,
             break;
         }
 
-        nAudioMix->mCriteria.push_back(nCriterion);
+        nAudioMix->mCriteria.add(nCriterion);
         env->DeleteLocalRef(jCriterion);
     }
 

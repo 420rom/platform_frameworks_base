@@ -2727,7 +2727,7 @@ public class PreferencesHelperTest extends UiServiceTestCase {
 
     @Test
     public void testCreateChannel_addToGroup() {
-        NotificationChannelGroup group = new NotificationChannelGroup("group", "group");
+        NotificationChannelGroup group = new NotificationChannelGroup("group", "");
         mHelper.createNotificationChannelGroup(PKG_N_MR1, UID_N_MR1, group, true);
         NotificationChannel nc = new NotificationChannel("id", "hello", IMPORTANCE_DEFAULT);
         assertTrue(mHelper.createNotificationChannel(PKG_N_MR1, UID_N_MR1, nc, true, false));
@@ -3177,8 +3177,8 @@ public class PreferencesHelperTest extends UiServiceTestCase {
 
     @Test
     public void testGetNotificationChannelGroupWithChannels() throws Exception {
-        NotificationChannelGroup group = new NotificationChannelGroup("group", "group");
-        NotificationChannelGroup other = new NotificationChannelGroup("something else", "name");
+        NotificationChannelGroup group = new NotificationChannelGroup("group", "");
+        NotificationChannelGroup other = new NotificationChannelGroup("something else", "");
         mHelper.createNotificationChannelGroup(PKG_N_MR1, UID_N_MR1, group, true);
         mHelper.createNotificationChannelGroup(PKG_N_MR1, UID_N_MR1, other, true);
 

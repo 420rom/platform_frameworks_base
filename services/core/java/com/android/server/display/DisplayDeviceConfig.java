@@ -550,6 +550,7 @@ public class DisplayDeviceConfig {
      */
     public float getNitsFromBacklight(float backlight) {
         if (mBacklightToNitsSpline == null) {
+            Slog.wtf(TAG, "requesting nits when no mapping exists.");
             return NITS_INVALID;
         }
         backlight = Math.max(backlight, mBacklightMinimum);

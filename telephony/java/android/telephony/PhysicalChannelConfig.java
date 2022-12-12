@@ -433,8 +433,7 @@ public final class PhysicalChannelConfig implements Parcelable {
         return Objects.hash(
                 mCellConnectionStatus, mCellBandwidthDownlinkKhz, mCellBandwidthUplinkKhz,
                 mNetworkType, mFrequencyRange, mDownlinkChannelNumber, mUplinkChannelNumber,
-                Arrays.hashCode(mContextIds), mPhysicalCellId, mBand, mDownlinkFrequency,
-                mUplinkFrequency);
+                mContextIds, mPhysicalCellId, mBand, mDownlinkFrequency, mUplinkFrequency);
     }
 
     public static final

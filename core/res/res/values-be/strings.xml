@@ -21,6 +21,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"Б"</string>
+    <string name="kilobyteShort" msgid="2214285521564195803">"КБ"</string>
+    <string name="megabyteShort" msgid="6649361267635823443">"МБ"</string>
+    <string name="gigabyteShort" msgid="7515809460261287991">"ГБ"</string>
+    <string name="terabyteShort" msgid="1822367128583886496">"Тб"</string>
+    <string name="petabyteShort" msgid="5651571254228534832">"Пб"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;Без назвы&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"(Няма нумара тэлефона)"</string>
@@ -1610,7 +1615,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"ТБ"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"Тэлефон"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"Дынамікі станцыi"</string>
-    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"Знешняя прылада"</string>
+    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"Навушнікі"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"Сістэма"</string>
@@ -2048,7 +2053,8 @@
     <string name="log_access_confirmation_allow" msgid="5302517782599389507">"Дазволіць аднаразовы доступ"</string>
     <string name="log_access_confirmation_deny" msgid="7685790957455099845">"Не дазваляць"</string>
     <string name="log_access_confirmation_body" product="default" msgid="1806692062668620735">"Журналы прылад запісваюць усё, што адбываецца на вашай прыладзе. Праграмы выкарыстоўваюць гэтыя журналы для пошуку і выпраўлення памылак.\n\nУ некаторых журналах можа ўтрымлівацца канфідэнцыяльная інфармацыя, таму давайце доступ да ўсіх журналаў прылады толькі тым праграмам, якім вы давяраеце. \n\nКалі вы не дасце гэтай праграме доступу да ўсіх журналаў прылад, у яе ўсё роўна застанецца доступ да ўласных журналаў. Для вытворцы вашай прылады будуць даступнымі некаторыя журналы і інфармацыя на вашай прыладзе."</string>
-    <string name="log_access_confirmation_body" product="tv" msgid="7379536536425265262">"Журналы прылад запісваюць усё, што адбываецца на вашай прыладзе. Праграмы выкарыстоўваюць гэтыя журналы для пошуку і выпраўлення памылак.\n\nУ некаторых журналах можа ўтрымлівацца канфідэнцыяльная інфармацыя, таму давайце доступ да ўсіх журналаў прылады толькі тым праграмам, якім вы давяраеце. \n\nКалі вы не дасце гэтай праграме доступу да ўсіх журналаў прылад, у яе ўсё роўна застанецца доступ да ўласных журналаў. Для вытворцы вашай прылады будуць даступнымі некаторыя журналы і інфармацыя на вашай прыладзе.\n\nДаведайцеся больш на старонцы g.co/android/devicelogs."</string>
+    <!-- no translation found for log_access_confirmation_body (7379536536425265262) -->
+    <skip />
     <string name="log_access_do_not_show_again" msgid="1058690599083091552">"Больш не паказваць"</string>
     <string name="slices_permission_request" msgid="3677129866636153406">"Праграма <xliff:g id="APP_0">%1$s</xliff:g> запытвае дазвол на паказ зрэзаў праграмы <xliff:g id="APP_2">%2$s</xliff:g>"</string>
     <string name="screenshot_edit" msgid="7408934887203689207">"Рэдагаваць"</string>

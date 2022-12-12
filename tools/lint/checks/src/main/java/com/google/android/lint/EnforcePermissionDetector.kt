@@ -65,16 +65,8 @@ class EnforcePermissionDetector : Detector(), SourceCodeScanner {
             if (attr1[i].name != attr2[i].name) {
                 return false
             }
-            val value1 = attr1[i].value
-            val value2 = attr2[i].value
-            if (value1 == null && value2 == null) {
-                continue
-            }
-            if (value1 == null || value2 == null) {
-                return false
-            }
-            val v1 = ConstantEvaluator.evaluate(context, value1)
-            val v2 = ConstantEvaluator.evaluate(context, value2)
+            val v1 = ConstantEvaluator.evaluate(context, attr1[i].value)
+            val v2 = ConstantEvaluator.evaluate(context, attr2[i].value)
             if (v1 != v2) {
                 return false
             }

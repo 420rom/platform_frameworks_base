@@ -1903,10 +1903,7 @@ final class UiModeManagerService extends SystemService {
             mComputedNightMode = false;
             return;
         }
-        if (mNightMode != MODE_NIGHT_AUTO || (mTwilightManager != null
-                && mTwilightManager.getLastTwilightState() != null)) {
-            resetNightModeOverrideLocked();
-        }
+        resetNightModeOverrideLocked();
     }
 
     private boolean resetNightModeOverrideLocked() {

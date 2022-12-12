@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
  * Copyright (C) 2015 The CyanogenMod Project
- * Copyright (C) 2017 420rom
+ * Copyright (C) 2017 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -6357,40 +6357,21 @@ public class NotificationManagerService extends SystemService {
             checkCallerIsSystem();
             mHandler.post(() -> {
                 synchronized (mNotificationLock) {
-                    int count = getNotificationCount(pkg, userId);
-                    boolean removeFgsNotification = false;
-                    if (count > MAX_PACKAGE_NOTIFICATIONS) {
-                        mUsageStats.registerOverCountQuota(pkg);
-                        removeFgsNotification = true;
+                    // strip flag from all enqueued notifications. listeners will be informed
+                    // in post runnable.
+                    List<NotificationRecord> enqueued = findNotificationsByListLocked(
+                            mEnqueuedNotifications, pkg, null, notificationId, userId);
+                    for (int i = 0; i < enqueued.size(); i++) {
+                        removeForegroundServiceFlagLocked(enqueued.get(i));
                     }
-                    if (removeFgsNotification) {
-                        NotificationRecord r = findNotificationLocked(pkg, null, notificationId,
-                                userId);
-                        if (r != null) {
-                            if (DBG) {
-                                Slog.d(TAG, "Remove FGS flag not allow. Cancel FGS notification");
-                            }
-                            removeFromNotificationListsLocked(r);
-                            cancelNotificationLocked(r, false, REASON_APP_CANCEL, true,
-                                    null, SystemClock.elapsedRealtime());
-                        }
-                    } else {
-                        // strip flag from all enqueued notifications. listeners will be informed
-                        // in post runnable.
-                        List<NotificationRecord> enqueued = findNotificationsByListLocked(
-                                mEnqueuedNotifications, pkg, null, notificationId, userId);
-                        for (int i = 0; i < enqueued.size(); i++) {
-                            removeForegroundServiceFlagLocked(enqueued.get(i));
-                        }
 
-                        // if posted notification exists, strip its flag and tell listeners
-                        NotificationRecord r = findNotificationByListLocked(
-                                mNotificationList, pkg, null, notificationId, userId);
-                        if (r != null) {
-                            removeForegroundServiceFlagLocked(r);
-                            mRankingHelper.sort(mNotificationList);
-                            mListeners.notifyPostedLocked(r, r);
-                        }
+                    // if posted notification exists, strip its flag and tell listeners
+                    NotificationRecord r = findNotificationByListLocked(
+                            mNotificationList, pkg, null, notificationId, userId);
+                    if (r != null) {
+                        removeForegroundServiceFlagLocked(r);
+                        mRankingHelper.sort(mNotificationList);
+                        mListeners.notifyPostedLocked(r, r);
                     }
                 }
             });
@@ -7085,29 +7066,6 @@ public class NotificationManagerService extends SystemService {
 
     private boolean areNotificationsEnabledForPackageInt(String pkg, int uid) {
         return mPermissionHelper.hasPermission(uid);
-    }
-
-    private int getNotificationCount(String pkg, int userId) {
-        int count = 0;
-        synchronized (mNotificationLock) {
-            final int numListSize = mNotificationList.size();
-            for (int i = 0; i < numListSize; i++) {
-                final NotificationRecord existing = mNotificationList.get(i);
-                if (existing.getSbn().getPackageName().equals(pkg)
-                        && existing.getSbn().getUserId() == userId) {
-                    count++;
-                }
-            }
-            final int numEnqSize = mEnqueuedNotifications.size();
-            for (int i = 0; i < numEnqSize; i++) {
-                final NotificationRecord existing = mEnqueuedNotifications.get(i);
-                if (existing.getSbn().getPackageName().equals(pkg)
-                        && existing.getSbn().getUserId() == userId) {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
 
     protected int getNotificationCount(String pkg, int userId, int excludedId,
@@ -10109,14 +10067,8 @@ public class NotificationManagerService extends SystemService {
      * given NAS is bound in.
      */
     private boolean isInteractionVisibleToListener(ManagedServiceInfo info, int userId) {
-        boolean isAssistantService = isServiceTokenValid(info.service);
+        boolean isAssistantService = mAssistants.isServiceTokenValidLocked(info.service);
         return !isAssistantService || info.isSameUser(userId);
-    }
-
-    private boolean isServiceTokenValid(IInterface service) {
-        synchronized (mNotificationLock) {
-            return mAssistants.isServiceTokenValidLocked(service);
-        }
     }
 
     private boolean isPackageSuspendedForUser(String pkg, int uid) {
@@ -11380,7 +11332,7 @@ public class NotificationManagerService extends SystemService {
                 BackgroundThread.getHandler().post(() -> {
                     if (info.isSystem
                             || hasCompanionDevice(info)
-                            || isServiceTokenValid(info.service)) {
+                            || mAssistants.isServiceTokenValidLocked(info.service)) {
                         notifyNotificationChannelChanged(
                                 info, pkg, user, channel, modificationType);
                     }

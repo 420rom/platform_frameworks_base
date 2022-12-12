@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JAVA_MODULE_DOES_NOT_EXPORT_PACKAGE")
 
 package android.processor.staledataclass
 
@@ -98,7 +97,7 @@ class StaleDataclassProcessor: AbstractProcessor() {
 
     private fun elemToString(elem: Element): String {
         return buildString {
-            append(elem.modifiers.joinToString(" ") { it.name.lowercase() })
+            append(elem.modifiers.joinToString(" ") { it.name.toLowerCase() })
             append(" ")
             append(elem.annotationMirrors.joinToString(" ", transform = { annotationToString(it) }))
             append(" ")

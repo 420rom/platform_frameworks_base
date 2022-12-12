@@ -21,6 +21,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"Б"</string>
+    <string name="kilobyteShort" msgid="2214285521564195803">"КБ"</string>
+    <string name="megabyteShort" msgid="6649361267635823443">"МБ"</string>
+    <string name="gigabyteShort" msgid="7515809460261287991">"ГБ"</string>
+    <string name="terabyteShort" msgid="1822367128583886496">"ТБ"</string>
+    <string name="petabyteShort" msgid="5651571254228534832">"Пб"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;Без назви&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"(Немає номера тел.)"</string>
@@ -1162,8 +1167,8 @@
     <string name="no" msgid="5122037903299899715">"Скасувати"</string>
     <string name="dialog_alert_title" msgid="651856561974090712">"Увага"</string>
     <string name="loading" msgid="3138021523725055037">"Завантаження..."</string>
-    <string name="capital_on" msgid="2770685323900821829">"УВІМКНЕНО"</string>
-    <string name="capital_off" msgid="7443704171014626777">"ВИМКНЕНО"</string>
+    <string name="capital_on" msgid="2770685323900821829">"УВІМК"</string>
+    <string name="capital_off" msgid="7443704171014626777">"ВИМК"</string>
     <string name="checked" msgid="9179896827054513119">"вибрано"</string>
     <string name="not_checked" msgid="7972320087569023342">"не вибрано"</string>
     <string name="selected" msgid="6614607926197755875">"вибрано"</string>
@@ -1610,7 +1615,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"Телевізор"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"Телефон"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"Динаміки док-станції"</string>
-    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"Зовнішній пристрій"</string>
+    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"Навушники"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"Система"</string>
@@ -2048,7 +2053,8 @@
     <string name="log_access_confirmation_allow" msgid="5302517782599389507">"Надати доступ лише цього разу"</string>
     <string name="log_access_confirmation_deny" msgid="7685790957455099845">"Не дозволяти"</string>
     <string name="log_access_confirmation_body" product="default" msgid="1806692062668620735">"У журналах пристрою реєструється все, що відбувається на ньому. За допомогою цих журналів додатки можуть виявляти й усувати проблеми.\n\nДеякі журнали можуть містити конфіденційні дані, тому надавати доступ до всіх журналів пристрою слід лише надійним додаткам. \n\nЯкщо додаток не має доступу до всіх журналів пристрою, він усе одно може використовувати власні журнали. Виробник вашого пристрою все одно може використовувати деякі журнали чи інформацію на ньому."</string>
-    <string name="log_access_confirmation_body" product="tv" msgid="7379536536425265262">"У журналах пристрою реєструється все, що відбувається на ньому. За допомогою цих журналів додатки можуть виявляти й усувати проблеми.\n\nДеякі журнали можуть містити конфіденційні дані, тому надавати доступ до всіх журналів пристрою слід лише надійним додаткам. \n\nЯкщо додаток не має доступу до всіх журналів пристрою, він усе одно може використовувати власні журнали. Виробник вашого пристрою все одно може використовувати деякі журнали чи інформацію на ньому.\n\nДокладніше: g.co/android/devicelogs."</string>
+    <!-- no translation found for log_access_confirmation_body (7379536536425265262) -->
+    <skip />
     <string name="log_access_do_not_show_again" msgid="1058690599083091552">"Більше не показувати"</string>
     <string name="slices_permission_request" msgid="3677129866636153406">"<xliff:g id="APP_0">%1$s</xliff:g> хоче показати фрагменти додатка <xliff:g id="APP_2">%2$s</xliff:g>"</string>
     <string name="screenshot_edit" msgid="7408934887203689207">"Редагувати"</string>

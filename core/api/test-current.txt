@@ -167,7 +167,6 @@ package android.app {
     method public void setEligibleForLegacyPermissionPrompt(boolean);
     method public static void setExitTransitionTimeout(long);
     method public void setLaunchActivityType(int);
-    method public void setLaunchTaskDisplayAreaFeatureId(int);
     method public void setLaunchWindowingMode(int);
     method public void setLaunchedFromBubble(boolean);
     method public void setTaskAlwaysOnTop(boolean);
@@ -1468,33 +1467,13 @@ package android.media {
     method public static boolean isEncodingLinearPcm(int);
   }
 
-  public final class AudioHalVersionInfo implements java.lang.Comparable<android.media.AudioHalVersionInfo> android.os.Parcelable {
-    method public int compareTo(@NonNull android.media.AudioHalVersionInfo);
-    method public int describeContents();
-    method public int getHalType();
-    method public int getMajorVersion();
-    method public int getMinorVersion();
-    method public void writeToParcel(@NonNull android.os.Parcel, int);
-    field @NonNull public static final android.media.AudioHalVersionInfo AIDL_1_0;
-    field public static final int AUDIO_HAL_TYPE_AIDL = 1; // 0x1
-    field public static final int AUDIO_HAL_TYPE_HIDL = 0; // 0x0
-    field @NonNull public static final android.os.Parcelable.Creator<android.media.AudioHalVersionInfo> CREATOR;
-    field @NonNull public static final android.media.AudioHalVersionInfo HIDL_2_0;
-    field @NonNull public static final android.media.AudioHalVersionInfo HIDL_4_0;
-    field @NonNull public static final android.media.AudioHalVersionInfo HIDL_5_0;
-    field @NonNull public static final android.media.AudioHalVersionInfo HIDL_6_0;
-    field @NonNull public static final android.media.AudioHalVersionInfo HIDL_7_0;
-    field @NonNull public static final android.media.AudioHalVersionInfo HIDL_7_1;
-    field @NonNull public static final java.util.List<android.media.AudioHalVersionInfo> VERSIONS;
-  }
-
   public class AudioManager {
     method @RequiresPermission("android.permission.QUERY_AUDIO_STATE") public int abandonAudioFocusForTest(@NonNull android.media.AudioFocusRequest, @NonNull String);
     method @NonNull @RequiresPermission(android.Manifest.permission.CALL_AUDIO_INTERCEPTION) public android.media.AudioRecord getCallDownlinkExtractionAudioRecord(@NonNull android.media.AudioFormat);
     method @NonNull @RequiresPermission(android.Manifest.permission.CALL_AUDIO_INTERCEPTION) public android.media.AudioTrack getCallUplinkInjectionAudioTrack(@NonNull android.media.AudioFormat);
     method @Nullable public static android.media.AudioDeviceInfo getDeviceInfoFromType(int);
     method @IntRange(from=0) @RequiresPermission("android.permission.QUERY_AUDIO_STATE") public long getFadeOutDurationOnFocusLossMillis(@NonNull android.media.AudioAttributes);
-    method @Nullable public static android.media.AudioHalVersionInfo getHalVersion();
+    method @Nullable public static String getHalVersion();
     method public static final int[] getPublicStreamTypes();
     method @NonNull public java.util.List<java.lang.Integer> getReportedSurroundFormats();
     method public int getStreamMinVolumeInt(int);
@@ -1837,6 +1816,10 @@ package android.os {
     method public static void setViolationLogger(android.os.StrictMode.ViolationLogger);
   }
 
+  public static final class StrictMode.ThreadPolicy.Builder {
+    method @NonNull public android.os.StrictMode.ThreadPolicy.Builder detectExplicitGc();
+  }
+
   public static final class StrictMode.ViolationInfo implements android.os.Parcelable {
     ctor public StrictMode.ViolationInfo(android.os.Parcel);
     ctor public StrictMode.ViolationInfo(android.os.Parcel, boolean);
@@ -2068,6 +2051,13 @@ package android.os.storage {
     method @NonNull public android.os.storage.StorageVolume.Builder setRemovable(boolean);
     method @NonNull public android.os.storage.StorageVolume.Builder setStorageUuid(@Nullable java.util.UUID);
     method @NonNull public android.os.storage.StorageVolume.Builder setUuid(@Nullable String);
+  }
+
+}
+
+package android.os.strictmode {
+
+  public final class ExplicitGcViolation extends android.os.strictmode.Violation {
   }
 
 }

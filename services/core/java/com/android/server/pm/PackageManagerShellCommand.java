@@ -314,8 +314,6 @@ class PackageManagerShellCommand extends ShellCommand {
                     return runRemoveUser();
                 case "set-user-restriction":
                     return runSetUserRestriction();
-                case "supports-multiple-users":
-                    return runSupportsMultipleUsers();
                 case "get-max-users":
                     return runGetMaxUsers();
                 case "get-max-running-users":
@@ -3016,12 +3014,6 @@ class PackageManagerShellCommand extends ShellCommand {
         return 0;
     }
 
-    public int runSupportsMultipleUsers() {
-        getOutPrintWriter().println("Is multiuser supported: "
-                + UserManager.supportsMultipleUsers());
-        return 0;
-    }
-
     public int runGetMaxUsers() {
         getOutPrintWriter().println("Maximum supported users: "
                 + UserManager.getMaxSupportedUsers());
@@ -3630,7 +3622,7 @@ class PackageManagerShellCommand extends ShellCommand {
                 fd = ParcelFileDescriptor.dup(getInFileDescriptor());
             }
             if (sizeBytes <= 0) {
-                getErrPrintWriter().println("Error: must specify an APK size");
+                getErrPrintWriter().println("Error: must specify a APK size");
                 return 1;
             }
 

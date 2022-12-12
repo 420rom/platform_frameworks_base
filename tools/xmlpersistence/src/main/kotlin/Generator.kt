@@ -149,7 +149,6 @@ private val ClassFieldInfo.allClassFields: List<ClassFieldInfo>
                 when (field) {
                     is ClassFieldInfo -> this += field.allClassFields
                     is ListFieldInfo -> this += field.element.allClassFields
-                    else -> {}
                 }
             }
         }

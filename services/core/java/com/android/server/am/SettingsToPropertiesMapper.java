@@ -86,11 +86,9 @@ public class SettingsToPropertiesMapper {
         DeviceConfig.NAMESPACE_INTELLIGENCE_CONTENT_SUGGESTIONS,
         DeviceConfig.NAMESPACE_LMKD_NATIVE,
         DeviceConfig.NAMESPACE_MEDIA_NATIVE,
-        DeviceConfig.NAMESPACE_MGLRU_NATIVE,
         DeviceConfig.NAMESPACE_NETD_NATIVE,
         DeviceConfig.NAMESPACE_NNAPI_NATIVE,
         DeviceConfig.NAMESPACE_PROFCOLLECT_NATIVE_BOOT,
-        DeviceConfig.NAMESPACE_REMOTE_KEY_PROVISIONING_NATIVE,
         DeviceConfig.NAMESPACE_RUNTIME_NATIVE,
         DeviceConfig.NAMESPACE_RUNTIME_NATIVE_BOOT,
         DeviceConfig.NAMESPACE_STATSD_NATIVE,
@@ -243,7 +241,7 @@ public class SettingsToPropertiesMapper {
             }
             value = "";
         } else if (value.length() > SYSTEM_PROPERTY_MAX_LENGTH) {
-            log("key=" + key + " value=" + value + " exceeds system property max length.");
+            log(value + " exceeds system property max length.");
             return;
         }
 

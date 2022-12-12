@@ -89,7 +89,7 @@ public class MobileSignalController extends SignalController<MobileState, Mobile
                 @Override
                 public void onMobileStatusChanged(boolean updateTelephony,
                         MobileStatus mobileStatus) {
-                    if (DEBUG) {
+                    if (Log.isLoggable(mTag, Log.DEBUG)) {
                         Log.d(mTag, "onMobileStatusChanged="
                                 + " updateTelephony=" + updateTelephony
                                 + " mobileStatus=" + mobileStatus.toString());
@@ -461,7 +461,7 @@ public class MobileSignalController extends SignalController<MobileState, Mobile
      * This will call listeners if necessary.
      */
     private void updateTelephony() {
-        if (DEBUG) {
+        if (Log.isLoggable(mTag, Log.DEBUG)) {
             Log.d(mTag, "updateTelephonySignalStrength: hasService="
                     + mCurrentState.isInService()
                     + " ss=" + mCurrentState.signalStrength

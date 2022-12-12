@@ -339,7 +339,7 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
 
     private int[] mDataConnectionNetworkType;
 
-    private ArrayList<List<CellInfo>> mCellInfo;
+    private ArrayList<List<CellInfo>> mCellInfo = null;
 
     private Map<Integer, List<EmergencyNumber>> mEmergencyNumberList;
 
@@ -725,7 +725,7 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
                 mMessageWaiting[i] = false;
                 mCallForwarding[i] = false;
                 mCellIdentity[i] = null;
-                mCellInfo.add(i, Collections.EMPTY_LIST);
+                mCellInfo.add(i, null);
                 mImsReasonInfo.add(i, null);
                 mSrvccState[i] = TelephonyManager.SRVCC_STATE_HANDOVER_NONE;
                 mCallDisconnectCause[i] = DisconnectCause.NOT_VALID;
@@ -802,7 +802,7 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
         mCallNetworkType = new int[numPhones];
         mCallAttributes = new CallAttributes[numPhones];
         mPreciseDataConnectionStates = new ArrayList<>();
-        mCellInfo = new ArrayList<>(numPhones);
+        mCellInfo = new ArrayList<>();
         mImsReasonInfo = new ArrayList<>();
         mEmergencyNumberList = new HashMap<>();
         mOutgoingCallEmergencyNumber = new EmergencyNumber[numPhones];
@@ -832,7 +832,7 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
             mMessageWaiting[i] =  false;
             mCallForwarding[i] =  false;
             mCellIdentity[i] = null;
-            mCellInfo.add(i, Collections.EMPTY_LIST);
+            mCellInfo.add(i, null);
             mImsReasonInfo.add(i, null);
             mSrvccState[i] = TelephonyManager.SRVCC_STATE_HANDOVER_NONE;
             mCallDisconnectCause[i] = DisconnectCause.NOT_VALID;
@@ -1794,17 +1794,10 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
         if (!checkNotifyPermission("notifyCellInfoForSubscriber()")) {
             return;
         }
-
         if (VDBG) {
             log("notifyCellInfoForSubscriber: subId=" + subId
                 + " cellInfo=" + cellInfo);
         }
-
-        if (cellInfo == null) {
-            loge("notifyCellInfoForSubscriber() received a null list");
-            cellInfo = Collections.EMPTY_LIST;
-        }
-
         int phoneId = getPhoneIdFromSubId(subId);
         synchronized (mRecords) {
             if (validatePhoneId(phoneId)) {
@@ -2572,39 +2565,33 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
         if (!checkNotifyPermission("notifyBarringInfo()")) {
             return;
         }
-        if (!validatePhoneId(phoneId)) {
-            loge("Received invalid phoneId for BarringInfo = " + phoneId);
+        if (barringInfo == null) {
+            log("Received null BarringInfo for subId=" + subId + ", phoneId=" + phoneId);
+            mBarringInfo.set(phoneId, new BarringInfo());
             return;
         }
 
         synchronized (mRecords) {
-            if (barringInfo == null) {
-                loge("Received null BarringInfo for subId=" + subId + ", phoneId=" + phoneId);
-                mBarringInfo.set(phoneId, new BarringInfo());
-                return;
-            }
-            if (barringInfo.equals(mBarringInfo.get(phoneId))) {
-                if (VDBG) log("Ignoring duplicate barring info.");
-                return;
-            }
-            mBarringInfo.set(phoneId, barringInfo);
-            // Barring info is non-null
-            BarringInfo biNoLocation = barringInfo.createLocationInfoSanitizedCopy();
-            if (VDBG) log("listen: call onBarringInfoChanged=" + barringInfo);
-            for (Record r : mRecords) {
-                if (r.matchTelephonyCallbackEvent(
-                        TelephonyCallback.EVENT_BARRING_INFO_CHANGED)
-                        && idMatch(r, subId, phoneId)) {
-                    try {
-                        if (DBG_LOC) {
-                            log("notifyBarringInfo: mBarringInfo="
-                                    + barringInfo + " r=" + r);
+            if (validatePhoneId(phoneId)) {
+                mBarringInfo.set(phoneId, barringInfo);
+                // Barring info is non-null
+                BarringInfo biNoLocation = barringInfo.createLocationInfoSanitizedCopy();
+                if (VDBG) log("listen: call onBarringInfoChanged=" + barringInfo);
+                for (Record r : mRecords) {
+                    if (r.matchTelephonyCallbackEvent(
+                            TelephonyCallback.EVENT_BARRING_INFO_CHANGED)
+                            && idMatch(r, subId, phoneId)) {
+                        try {
+                            if (DBG_LOC) {
+                                log("notifyBarringInfo: mBarringInfo="
+                                        + barringInfo + " r=" + r);
+                            }
+                            r.callback.onBarringInfoChanged(
+                                    checkFineLocationAccess(r, Build.VERSION_CODES.BASE)
+                                        ? barringInfo : biNoLocation);
+                        } catch (RemoteException ex) {
+                            mRemoveList.add(r.binder);
                         }
-                        r.callback.onBarringInfoChanged(
-                                checkFineLocationAccess(r, Build.VERSION_CODES.BASE)
-                                    ? barringInfo : biNoLocation);
-                    } catch (RemoteException ex) {
-                        mRemoveList.add(r.binder);
                     }
                 }
             }
@@ -2991,8 +2978,8 @@ public class TelephonyRegistry extends ITelephonyRegistry.Stub {
                 pw.println("mBarringInfo=" + mBarringInfo.get(i));
                 pw.println("mCarrierNetworkChangeState=" + mCarrierNetworkChangeState[i]);
                 pw.println("mTelephonyDisplayInfo=" + mTelephonyDisplayInfos[i]);
-                pw.println("mIsDataEnabled=" + mIsDataEnabled[i]);
-                pw.println("mDataEnabledReason=" + mDataEnabledReason[i]);
+                pw.println("mIsDataEnabled=" + mIsDataEnabled);
+                pw.println("mDataEnabledReason=" + mDataEnabledReason);
                 pw.println("mAllowedNetworkTypeReason=" + mAllowedNetworkTypeReason[i]);
                 pw.println("mAllowedNetworkTypeValue=" + mAllowedNetworkTypeValue[i]);
                 pw.println("mPhysicalChannelConfigs=" + mPhysicalChannelConfigs.get(i));

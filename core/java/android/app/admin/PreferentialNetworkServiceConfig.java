@@ -203,14 +203,17 @@ public final class PreferentialNetworkServiceConfig implements Parcelable {
         return mIsEnabled == that.mIsEnabled
                 && mAllowFallbackToDefaultConnection == that.mAllowFallbackToDefaultConnection
                 && mNetworkId == that.mNetworkId
-                && Arrays.equals(mIncludedUids, that.mIncludedUids)
-                && Arrays.equals(mExcludedUids, that.mExcludedUids);
+                && Objects.equals(mIncludedUids, that.mIncludedUids)
+                && Objects.equals(mExcludedUids, that.mExcludedUids);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mIsEnabled, mAllowFallbackToDefaultConnection,
-                Arrays.hashCode(mIncludedUids), Arrays.hashCode(mExcludedUids), mNetworkId);
+        return ((Objects.hashCode(mIsEnabled) * 17)
+                + (Objects.hashCode(mAllowFallbackToDefaultConnection) * 19)
+                + (Objects.hashCode(mIncludedUids) * 23)
+                + (Objects.hashCode(mExcludedUids) * 29)
+                + mNetworkId * 31);
     }
 
     /**

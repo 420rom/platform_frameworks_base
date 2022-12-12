@@ -25,8 +25,6 @@ import android.util.Log;
 
 import com.android.internal.util.Preconditions;
 
-import java.util.Arrays;
-
 /**
  * Compound validator that returns {@code true} on {@link #isValid(ValueFinder)} if any
  * of its subvalidators returns {@code true} as well.
@@ -63,8 +61,7 @@ final class OptionalValidators extends InternalValidator {
     public String toString() {
         if (!sDebug) return super.toString();
 
-        return new StringBuilder("OptionalValidators: [validators=")
-                .append(Arrays.toString(mValidators))
+        return new StringBuilder("OptionalValidators: [validators=").append(mValidators)
                 .append("]")
                 .toString();
     }

@@ -72,7 +72,4 @@ public class ProcessTest extends TestCase {
         assertEquals(-1, Process.getThreadGroupLeader(BAD_PID));
     }
 
-    public void testGetAdvertisedMem() {
-        assertTrue(Process.getTotalMemory() <= Process.getAdvertisedMem());
-    }
 }

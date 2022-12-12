@@ -24,16 +24,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -106,27 +103,19 @@ public class LicenseHtmlGeneratorFromXmlTest {
             + "license content #1\n"
             + "</pre><!-- license-text -->\n"
             + "</td></tr><!-- same-license -->\n"
-            + "</table>\n"
-            + "<div class=\"path-counts\"><table>\n"
-            + "  <tr><th>Path prefix</th><th>Count</th></tr>\n\n"
-            + "  <tr><td>file0</td><td>1</td></tr>\n"
-            + "  <tr><td>file1</td><td>1</td></tr>\n"
-            + "</table></div>\n\n"
-            + "</body></html>\n";
+            + "</table></body></html>\n";
 
     private static final String HTML_NEW_BODY_STRING =
             "<strong>Libraries</strong>\n"
             + "<ul class=\"libraries\">\n"
             + "<li><a href=\"#id0\">libA</a></li>\n"
             + "<li><a href=\"#id1\">libB</a></li>\n"
-            + "<li><a href=\"#id0\">libC</a></li>\n"
             + "</ul>\n"
             + "<strong>Files</strong>\n"
             + "<ul class=\"files\">\n"
             + "<li><a href=\"#id0\">/file0 - libA</a></li>\n"
             + "<li><a href=\"#id1\">/file0 - libB</a></li>\n"
             + "<li><a href=\"#id0\">/file1 - libA</a></li>\n"
-            + "<li><a href=\"#id0\">/file2 - libC</a></li>\n"
             + "</ul>\n"
             + "</div><!-- table of contents -->\n"
             + "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n"
@@ -135,10 +124,6 @@ public class LicenseHtmlGeneratorFromXmlTest {
             + "<div class=\"file-list\">\n"
             + "/file0 <br/>\n"
             + "/file1 <br/>\n"
-            + "</div><!-- file-list -->\n"
-            + "<div class=\"label\"><strong>libC</strong> used by:</div>\n"
-            + "<div class=\"file-list\">\n"
-            + "/file2 <br/>\n"
             + "</div><!-- file-list -->\n"
             + "<pre class=\"license-text\">\n"
             + "license content #0\n"
@@ -153,14 +138,7 @@ public class LicenseHtmlGeneratorFromXmlTest {
             + "license content #1\n"
             + "</pre><!-- license-text -->\n"
             + "</td></tr><!-- same-license -->\n"
-            + "</table>\n"
-            + "<div class=\"path-counts\"><table>\n"
-            + "  <tr><th>Path prefix</th><th>Count</th></tr>\n\n"
-            + "  <tr><td>file0</td><td>1</td></tr>\n"
-            + "  <tr><td>file1</td><td>1</td></tr>\n"
-            + "  <tr><td>file2</td><td>1</td></tr>\n"
-            + "</table></div>\n\n"
-            + "</body></html>\n";
+            + "</table></body></html>\n";
 
     private static final String EXPECTED_OLD_HTML_STRING = HTML_HEAD_STRING + HTML_OLD_BODY_STRING;
 
@@ -219,8 +197,7 @@ public class LicenseHtmlGeneratorFromXmlTest {
     }
 
     @Test
-    public void testGenerateHtml() throws Exception {
-        List<File> xmlFiles = new ArrayList<>();
+    public void testGenerateHtml() {
         Map<String, Map<String, Set<String>>> fileNameToLibraryToContentIdMap = new HashMap<>();
         Map<String, String> contentIdToFileContentMap = new HashMap<>();
         Map<String, Set<String>> toBoth = new HashMap<>();
@@ -236,41 +213,36 @@ public class LicenseHtmlGeneratorFromXmlTest {
 
         StringWriter output = new StringWriter();
         LicenseHtmlGeneratorFromXml.generateHtml(
-                xmlFiles, fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
+                fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
                 new PrintWriter(output), "");
         assertThat(output.toString()).isEqualTo(EXPECTED_OLD_HTML_STRING);
     }
 
     @Test
-    public void testGenerateNewHtml() throws Exception {
-        List<File> xmlFiles = new ArrayList<>();
+    public void testGenerateNewHtml() {
         Map<String, Map<String, Set<String>>> fileNameToLibraryToContentIdMap = new HashMap<>();
         Map<String, String> contentIdToFileContentMap = new HashMap<>();
         Map<String, Set<String>> toBoth = new HashMap<>();
         Map<String, Set<String>> toOne = new HashMap<>();
-        Map<String, Set<String>> toOther = new HashMap<>();
 
         toBoth.put("libA", new HashSet<String>(Arrays.asList("0")));
         toBoth.put("libB", new HashSet<String>(Arrays.asList("1")));
         toOne.put("libA", new HashSet<String>(Arrays.asList("0")));
-        toOther.put("libC", new HashSet<String>(Arrays.asList("0")));
 
         fileNameToLibraryToContentIdMap.put("/file0", toBoth);
         fileNameToLibraryToContentIdMap.put("/file1", toOne);
-        fileNameToLibraryToContentIdMap.put("/file2", toOther);
         contentIdToFileContentMap.put("0", "license content #0");
         contentIdToFileContentMap.put("1", "license content #1");
 
         StringWriter output = new StringWriter();
         LicenseHtmlGeneratorFromXml.generateHtml(
-                xmlFiles, fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
+                fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
                 new PrintWriter(output), "");
         assertThat(output.toString()).isEqualTo(EXPECTED_NEW_HTML_STRING);
     }
 
     @Test
-    public void testGenerateHtmlWithCustomHeading() throws Exception {
-        List<File> xmlFiles = new ArrayList<>();
+    public void testGenerateHtmlWithCustomHeading() {
         Map<String, Map<String, Set<String>>> fileNameToLibraryToContentIdMap = new HashMap<>();
         Map<String, String> contentIdToFileContentMap = new HashMap<>();
         Map<String, Set<String>> toBoth = new HashMap<>();
@@ -286,34 +258,30 @@ public class LicenseHtmlGeneratorFromXmlTest {
 
         StringWriter output = new StringWriter();
         LicenseHtmlGeneratorFromXml.generateHtml(
-                xmlFiles, fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
+                fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
                 new PrintWriter(output), HTML_CUSTOM_HEADING);
         assertThat(output.toString()).isEqualTo(EXPECTED_OLD_HTML_STRING_WITH_CUSTOM_HEADING);
     }
 
     @Test
-    public void testGenerateNewHtmlWithCustomHeading() throws Exception {
-        List<File> xmlFiles = new ArrayList<>();
+    public void testGenerateNewHtmlWithCustomHeading() {
         Map<String, Map<String, Set<String>>> fileNameToLibraryToContentIdMap = new HashMap<>();
         Map<String, String> contentIdToFileContentMap = new HashMap<>();
         Map<String, Set<String>> toBoth = new HashMap<>();
         Map<String, Set<String>> toOne = new HashMap<>();
-        Map<String, Set<String>> toOther = new HashMap<>();
 
         toBoth.put("libA", new HashSet<String>(Arrays.asList("0")));
         toBoth.put("libB", new HashSet<String>(Arrays.asList("1")));
         toOne.put("libA", new HashSet<String>(Arrays.asList("0")));
-        toOther.put("libC", new HashSet<String>(Arrays.asList("0")));
 
         fileNameToLibraryToContentIdMap.put("/file0", toBoth);
         fileNameToLibraryToContentIdMap.put("/file1", toOne);
-        fileNameToLibraryToContentIdMap.put("/file2", toOther);
         contentIdToFileContentMap.put("0", "license content #0");
         contentIdToFileContentMap.put("1", "license content #1");
 
         StringWriter output = new StringWriter();
         LicenseHtmlGeneratorFromXml.generateHtml(
-                xmlFiles, fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
+                fileNameToLibraryToContentIdMap, contentIdToFileContentMap,
                 new PrintWriter(output), HTML_CUSTOM_HEADING);
         assertThat(output.toString()).isEqualTo(EXPECTED_NEW_HTML_STRING_WITH_CUSTOM_HEADING);
     }

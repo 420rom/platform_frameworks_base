@@ -50,12 +50,13 @@ public class ExtensionFragmentListener<T extends FragmentBase> implements Consum
 
     @Override
     public void accept(T extension) {
-        if (Fragment.class.isInstance(extension)) {
+        try {
+            Fragment.class.cast(extension);
             mFragmentHostManager.getExtensionManager().setCurrentExtension(mId, mTag,
                     mOldClass, extension.getClass().getName(), mExtension.getContext());
             mOldClass = extension.getClass().getName();
-        } else {
-            Log.e(TAG, extension.getClass().getName() + " must be a Fragment");
+        } catch (ClassCastException e) {
+            Log.e(TAG, extension.getClass().getName() + " must be a Fragment", e);
         }
         mExtension.clearItem(true);
     }

@@ -22,7 +22,6 @@ import android.media.AudioAttributes;
 import android.media.AudioDeviceAttributes;
 import android.media.AudioFormat;
 import android.media.AudioFocusInfo;
-import android.media.AudioHalVersionInfo;
 import android.media.AudioPlaybackConfiguration;
 import android.media.AudioRecordingConfiguration;
 import android.media.AudioRoutesInfo;
@@ -516,5 +515,5 @@ interface IAudioService {
             in AudioDeviceAttributes device, in List<VolumeInfo> volumes,
             boolean handlesvolumeAdjustment);
 
-    AudioHalVersionInfo getHalVersion();
+    String getHalVersion();
 }

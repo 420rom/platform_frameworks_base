@@ -18677,10 +18677,9 @@ public class DevicePolicyManagerService extends BaseIDevicePolicyManager {
         Objects.requireNonNull(strings, "strings must be provided.");
 
         mInjector.binderWithCleanCallingIdentity(() -> {
-            if (mDeviceManagementResourcesProvider.updateStrings(strings)) {
-                sendStringsUpdatedBroadcast(
-                        strings.stream().map(s -> s.getStringId()).collect(Collectors.toList()));
-            }
+            if (mDeviceManagementResourcesProvider.updateStrings(strings))
+            sendStringsUpdatedBroadcast(
+                    strings.stream().map(s -> s.getStringId()).collect(Collectors.toList()));
         });
     }
 

@@ -85,6 +85,7 @@ import android.os.PowerSaveState;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.SELinux;
+import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.WorkSource;
@@ -2831,7 +2832,7 @@ public class UserBackupManagerService {
                                         + " includekeyvalue="
                                         + doKeyValue
                                         + " pkgs="
-                                        + Arrays.toString(pkgList)));
+                                        + pkgList));
             }
             Slog.i(TAG, addUserIdToLogMessage(mUserId, "Beginning adb backup..."));
 

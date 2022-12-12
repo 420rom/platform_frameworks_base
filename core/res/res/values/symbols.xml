@@ -334,6 +334,12 @@
   <java-symbol type="bool" name="config_checkWallpaperAtBoot" />
   <java-symbol type="string" name="config_wallpaperManagerServiceName" />
   <java-symbol type="string" name="config_inputEventCompatProcessorOverrideClassName" />
+  <java-symbol type="bool" name="config_enableUpdateableTimeZoneRules" />
+  <java-symbol type="bool" name="config_timeZoneRulesUpdateTrackingEnabled" />
+  <java-symbol type="string" name="config_timeZoneRulesUpdaterPackage" />
+  <java-symbol type="string" name="config_timeZoneRulesDataPackage" />
+  <java-symbol type="integer" name="config_timeZoneRulesCheckTimeMillisAllowed" />
+  <java-symbol type="integer" name="config_timeZoneRulesCheckRetryCount" />
   <java-symbol type="bool" name="config_sendAudioBecomingNoisy" />
   <java-symbol type="bool" name="config_enableScreenshotChord" />
   <java-symbol type="bool" name="config_enableWifiDisplay" />
@@ -753,6 +759,7 @@
   <java-symbol type="string" name="fileSizeSuffix" />
   <java-symbol type="string" name="force_close" />
   <java-symbol type="string" name="gadget_host_error_inflating" />
+  <java-symbol type="string" name="gigabyteShort" />
   <java-symbol type="string" name="gpsNotifMessage" />
   <java-symbol type="string" name="gpsNotifTicker" />
   <java-symbol type="string" name="gpsNotifTitle" />
@@ -809,6 +816,7 @@
   <java-symbol type="string" name="keyboardview_keycode_enter" />
   <java-symbol type="string" name="keyboardview_keycode_mode_change" />
   <java-symbol type="string" name="keyboardview_keycode_shift" />
+  <java-symbol type="string" name="kilobyteShort" />
   <java-symbol type="string" name="last_month" />
   <java-symbol type="string" name="launchBrowserDefault" />
   <java-symbol type="string" name="lock_to_app_unlock_pin" />
@@ -825,6 +833,7 @@
   <java-symbol type="string" name="lockscreen_emergency_call" />
   <java-symbol type="string" name="lockscreen_return_to_call" />
   <java-symbol type="string" name="low_memory" />
+  <java-symbol type="string" name="megabyteShort" />
   <java-symbol type="string" name="midnight" />
   <java-symbol type="string" name="mismatchPin" />
   <java-symbol type="string" name="mmiComplete" />
@@ -854,6 +863,7 @@
   <java-symbol type="string" name="passwordIncorrect" />
   <java-symbol type="string" name="perms_description_app" />
   <java-symbol type="string" name="perms_new_perm_prefix" />
+  <java-symbol type="string" name="petabyteShort" />
   <java-symbol type="string" name="peerTtyModeFull" />
   <java-symbol type="string" name="peerTtyModeHco" />
   <java-symbol type="string" name="peerTtyModeVco" />
@@ -1029,6 +1039,7 @@
   <java-symbol type="string" name="sync_really_delete" />
   <java-symbol type="string" name="sync_too_many_deletes_desc" />
   <java-symbol type="string" name="sync_undo_deletes" />
+  <java-symbol type="string" name="terabyteShort" />
   <java-symbol type="string" name="text_copied" />
   <java-symbol type="string" name="time_of_day" />
   <java-symbol type="string" name="time_picker_decrement_hour_button" />
@@ -1075,7 +1086,7 @@
   <java-symbol type="string" name="default_audio_route_id" />
   <java-symbol type="string" name="default_audio_route_name" />
   <java-symbol type="string" name="default_audio_route_name_dock_speakers" />
-  <java-symbol type="string" name="default_audio_route_name_external_device" />
+  <java-symbol type="string" name="default_audio_route_name_hdmi" />
   <java-symbol type="string" name="default_audio_route_name_headphones" />
   <java-symbol type="string" name="default_audio_route_name_usb" />
   <java-symbol type="string" name="default_audio_route_category_name" />
@@ -2034,6 +2045,8 @@
   <java-symbol type="integer" name="config_networkAvoidBadWifi" />
   <java-symbol type="integer" name="config_networkWakeupPacketMark" />
   <java-symbol type="integer" name="config_networkWakeupPacketMask" />
+  <java-symbol type="bool" name="config_apfDrop802_3Frames" />
+  <java-symbol type="array" name="config_apfEthTypeBlackList" />
   <java-symbol type="integer" name="config_networkDefaultDailyMultipathQuotaBytes" />
   <java-symbol type="integer" name="config_networkMeteredMultipathPreference" />
   <java-symbol type="array" name="config_networkSupportedKeepaliveCount" />
@@ -2290,7 +2303,6 @@
   <java-symbol type="id" name="media_actions" />
 
   <java-symbol type="dimen" name="config_mediaMetadataBitmapMaxSize" />
-  <java-symbol type="array" name="config_fontManagerServiceCerts" />
 
     <!-- From SystemUI -->
   <java-symbol type="anim" name="push_down_in" />
@@ -3003,8 +3015,6 @@
   <java-symbol type="integer" name="config_cameraLiftTriggerSensorType" />
   <java-symbol type="string" name="config_cameraLiftTriggerSensorStringType" />
   <java-symbol type="bool" name="config_emergencyGestureEnabled" />
-  <java-symbol type="bool" name="config_defaultEmergencyGestureEnabled" />
-  <java-symbol type="bool" name="config_defaultEmergencyGestureSoundEnabled" />
   <java-symbol type="bool" name="config_volumeHushGestureEnabled" />
 
   <java-symbol type="drawable" name="platlogo_m" />
@@ -4396,40 +4406,6 @@
   <java-symbol type="string" name="config_pdp_reject_multi_conn_to_same_pdn_not_allowed" />
 
   <java-symbol type="array" name="config_notificationMsgPkgsAllowedAsConvos" />
-
-  <!-- To config device idle -->
-  <java-symbol type="integer" name="device_idle_flex_time_short_ms" />
-  <java-symbol type="integer" name="device_idle_light_after_inactive_to_ms" />
-  <java-symbol type="integer" name="device_idle_light_idle_to_ms" />
-  <java-symbol type="integer" name="device_idle_light_idle_factor" />
-  <java-symbol type="integer" name="device_idle_light_max_idle_to_ms" />
-  <java-symbol type="integer" name="device_idle_light_idle_maintenance_min_budget_ms" />
-  <java-symbol type="integer" name="device_idle_light_idle_maintenance_max_budget_ms" />
-  <java-symbol type="integer" name="device_idle_min_light_maintenance_time_ms" />
-  <java-symbol type="integer" name="device_idle_min_deep_maintenance_time_ms" />
-  <java-symbol type="integer" name="device_idle_inactive_to_ms" />
-  <java-symbol type="integer" name="device_idle_sensing_to_ms" />
-  <java-symbol type="integer" name="device_idle_locating_to_ms" />
-  <java-symbol type="integer" name="device_idle_location_accuracy" />
-  <java-symbol type="integer" name="device_idle_motion_inactive_to_ms" />
-  <java-symbol type="integer" name="device_idle_motion_inactive_to_flex_ms" />
-  <java-symbol type="integer" name="device_idle_idle_after_inactive_to_ms" />
-  <java-symbol type="integer" name="device_idle_idle_pending_to_ms" />
-  <java-symbol type="integer" name="device_idle_max_idle_pending_to_ms" />
-  <java-symbol type="integer" name="device_idle_idle_pending_factor" />
-  <java-symbol type="integer" name="device_idle_quick_doze_delay_to_ms" />
-  <java-symbol type="integer" name="device_idle_idle_to_ms" />
-  <java-symbol type="integer" name="device_idle_max_idle_to_ms" />
-  <java-symbol type="integer" name="device_idle_idle_factor" />
-  <java-symbol type="integer" name="device_idle_min_time_to_alarm_ms" />
-  <java-symbol type="integer" name="device_idle_max_temp_app_allowlist_duration_ms" />
-  <java-symbol type="integer" name="device_idle_mms_temp_app_allowlist_duration_ms" />
-  <java-symbol type="integer" name="device_idle_sms_temp_app_allowlist_duration_ms" />
-  <java-symbol type="integer" name="device_idle_notification_allowlist_duration_ms" />
-  <java-symbol type="bool" name="device_idle_wait_for_unlock" />
-  <java-symbol type="integer" name="device_idle_pre_idle_factor_long" />
-  <java-symbol type="integer" name="device_idle_pre_idle_factor_short" />
-  <java-symbol type="bool" name="device_idle_use_window_alarms" />
 
   <!-- Binder heavy hitter watcher configs -->
   <java-symbol type="bool" name="config_defaultBinderHeavyHitterWatcherEnabled" />

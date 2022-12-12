@@ -20,7 +20,7 @@ license {
 
 java_binary {
     name: "hid",
-    wrapper: "hid.sh",
+    wrapper: "hid",
     srcs: ["**/*.java"],
     required: ["libhidcommand_jni"],
 }

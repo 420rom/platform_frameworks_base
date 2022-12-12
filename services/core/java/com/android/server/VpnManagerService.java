@@ -140,12 +140,6 @@ public class VpnManagerService extends IVpnManager.Stub {
                 INetd netd, int userId) {
             return new Vpn(looper, context, nms, netd, userId, new VpnProfileStore());
         }
-
-        /** Create a LockDownVpnTracker. */
-        public LockdownVpnTracker createLockDownVpnTracker(Context context, Handler handler,
-                Vpn vpn, VpnProfile profile) {
-            return new LockdownVpnTracker(context, handler, vpn,  profile);
-        }
     }
 
     public VpnManagerService(Context context, Dependencies deps) {
@@ -187,10 +181,6 @@ public class VpnManagerService extends IVpnManager.Stub {
         synchronized (mVpns) {
             for (int i = 0; i < mVpns.size(); i++) {
                 pw.println(mVpns.keyAt(i) + ": " + mVpns.valueAt(i).getPackage());
-                pw.increaseIndent();
-                mVpns.valueAt(i).dump(pw);
-                pw.decreaseIndent();
-                pw.println();
             }
             pw.decreaseIndent();
         }
@@ -534,7 +524,8 @@ public class VpnManagerService extends IVpnManager.Stub {
                 logw("VPN for user " + user + " not ready yet. Skipping lockdown");
                 return false;
             }
-            setLockdownTracker(mDeps.createLockDownVpnTracker(mContext, mHandler, vpn,  profile));
+            setLockdownTracker(
+                    new LockdownVpnTracker(mContext, mHandler, vpn,  profile));
         }
 
         return true;
@@ -800,7 +791,8 @@ public class VpnManagerService extends IVpnManager.Stub {
         }
     };
 
-    private void onUserStarted(int userId) {
+    @VisibleForTesting
+    void onUserStarted(int userId) {
         UserInfo user = mUserManager.getUserInfo(userId);
         if (user == null) {
             logw("Started user doesn't exist. UserId: " + userId);
@@ -891,7 +883,8 @@ public class VpnManagerService extends IVpnManager.Stub {
         }
     }
 
-    private void onPackageRemoved(String packageName, int uid, boolean isReplacing) {
+    @VisibleForTesting
+    void onPackageRemoved(String packageName, int uid, boolean isReplacing) {
         if (TextUtils.isEmpty(packageName) || uid < 0) {
             Log.wtf(TAG, "Invalid package in onPackageRemoved: " + packageName + " | " + uid);
             return;
@@ -914,7 +907,8 @@ public class VpnManagerService extends IVpnManager.Stub {
         }
     }
 
-    private void onPackageAdded(String packageName, int uid, boolean isReplacing) {
+    @VisibleForTesting
+    void onPackageAdded(String packageName, int uid, boolean isReplacing) {
         if (TextUtils.isEmpty(packageName) || uid < 0) {
             Log.wtf(TAG, "Invalid package in onPackageAdded: " + packageName + " | " + uid);
             return;

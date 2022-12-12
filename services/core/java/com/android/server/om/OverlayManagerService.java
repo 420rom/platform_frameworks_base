@@ -56,7 +56,6 @@ import android.content.pm.overlay.OverlayPaths;
 import android.content.res.ApkAssets;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Environment;
 import android.os.FabricatedOverlayInternal;
 import android.os.HandlerThread;
@@ -877,7 +876,7 @@ public final class OverlayManagerService extends SystemService {
                     }
                     Slog.d(TAG, "commit failed: " + e.getMessage(), e);
                     throw new SecurityException("commit failed"
-                            + (DEBUG || Build.IS_DEBUGGABLE ? ": " + e.getMessage() : ""));
+                            + (DEBUG ? ": " + e.getMessage() : ""));
                 }
             } finally {
                 traceEnd(TRACE_TAG_RRO);
@@ -1010,9 +1009,7 @@ public final class OverlayManagerService extends SystemService {
                 }
                 opti++;
 
-                if ("-a".equals(opt)) {
-                    // dumpsys will pass in -a; silently ignore it
-                } else if ("-h".equals(opt)) {
+                if ("-h".equals(opt)) {
                     pw.println("dump [-h] [--verbose] [--user USER_ID] [[FIELD] PACKAGE]");
                     pw.println("  Print debugging information about the overlay manager.");
                     pw.println("  With optional parameter PACKAGE, limit output to the specified");

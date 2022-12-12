@@ -667,7 +667,6 @@ public class AdbDebuggingManager {
                                     + " Not enabling adbwifi.");
                             Settings.Global.putInt(mContentResolver,
                                     Settings.Global.ADB_WIFI_ENABLED, 0);
-                            return;
                         }
 
                         // Check for network change
@@ -676,7 +675,6 @@ public class AdbDebuggingManager {
                             Slog.e(TAG, "Unable to get the wifi ap's BSSID. Disabling adbwifi.");
                             Settings.Global.putInt(mContentResolver,
                                     Settings.Global.ADB_WIFI_ENABLED, 0);
-                            return;
                         }
                         synchronized (mAdbConnectionInfo) {
                             if (!bssid.equals(mAdbConnectionInfo.getBSSID())) {

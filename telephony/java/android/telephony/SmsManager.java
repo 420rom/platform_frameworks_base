@@ -1935,7 +1935,7 @@ public final class SmsManager {
                         + " at calling enableCellBroadcastRangeForSubscriber. subId = " + subId);
             }
         } catch (RemoteException ex) {
-            Rlog.d(TAG, "enableCellBroadcastRange: ", ex);
+            Rlog.d(TAG, "enableCellBroadcastRange: " + ex.getStackTrace());
             // ignore it
         }
 
@@ -1996,7 +1996,7 @@ public final class SmsManager {
                         + " at calling disableCellBroadcastRangeForSubscriber. subId = " + subId);
             }
         } catch (RemoteException ex) {
-            Rlog.d(TAG, "disableCellBroadcastRange: ", ex);
+            Rlog.d(TAG, "disableCellBroadcastRange: " + ex.getStackTrace());
             // ignore it
         }
 

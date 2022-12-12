@@ -102,8 +102,7 @@ public class Face10Test {
                 FaceSensorProperties.TYPE_UNKNOWN, supportsFaceDetection, supportsSelfIllumination,
                 resetLockoutRequiresChallenge);
 
-        Face10.sSystemClock = Clock.fixed(
-                Instant.ofEpochMilli(100), ZoneId.of("America/Los_Angeles"));
+        Face10.sSystemClock = Clock.fixed(Instant.ofEpochMilli(100), ZoneId.of("PST"));
         mFace10 = new Face10(mContext, sensorProps, mLockoutResetDispatcher, mHandler, mScheduler,
                 mBiometricContext);
         mBinder = new Binder();
@@ -113,7 +112,7 @@ public class Face10Test {
         waitForIdle();
         Face10.sSystemClock = Clock.fixed(Instant.ofEpochSecond(
                 Face10.sSystemClock.instant().getEpochSecond() + seconds),
-                ZoneId.of("America/Los_Angeles"));
+                ZoneId.of("PST"));
     }
 
     @Test

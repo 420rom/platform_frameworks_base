@@ -27,7 +27,6 @@ import static android.os.MessageQueue.OnFileDescriptorEventListener.EVENT_INPUT;
 import static android.os.Process.SYSTEM_UID;
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 import static android.os.Process.ZYGOTE_POLICY_FLAG_EMPTY;
-import static android.os.Process.getAdvertisedMem;
 import static android.os.Process.getFreeMemory;
 import static android.os.Process.getTotalMemory;
 import static android.os.Process.killProcessQuiet;
@@ -1532,7 +1531,6 @@ public final class ProcessList {
     void getMemoryInfo(ActivityManager.MemoryInfo outInfo) {
         final long homeAppMem = getMemLevel(HOME_APP_ADJ);
         final long cachedAppMem = getMemLevel(CACHED_APP_MIN_ADJ);
-        outInfo.advertisedMem = getAdvertisedMem();
         outInfo.availMem = getFreeMemory();
         outInfo.totalMem = getTotalMemory();
         outInfo.threshold = homeAppMem;
@@ -2209,25 +2207,16 @@ public final class ProcessList {
             Map<String, Pair<String, Long>> allowlistedAppDataInfoMap;
             boolean bindMountAppStorageDirs = false;
             boolean bindMountAppsData = mAppDataIsolationEnabled
-                    && (UserHandle.isApp(app.uid) || UserHandle.isIsolated(app.uid)
-                        || app.isSdkSandbox)
+                    && (UserHandle.isApp(app.uid) || UserHandle.isIsolated(app.uid))
                     && mPlatformCompat.isChangeEnabled(APP_DATA_DIRECTORY_ISOLATION, app.info);
 
             // Get all packages belongs to the same shared uid. sharedPackages is empty array
             // if it doesn't have shared uid.
             final PackageManagerInternal pmInt = mService.getPackageManagerInternal();
-
-            // In the case of sdk sandbox, the pkgDataInfoMap of only the client app associated with
-            // the sandbox is required to handle app visibility restrictions for the sandbox.
-            final String[] targetPackagesList;
-            if (app.isSdkSandbox) {
-                targetPackagesList = new String[]{app.sdkSandboxClientAppPackage};
-            } else {
-                final String[] sharedPackages = pmInt.getSharedUserPackagesForPackage(
-                        app.info.packageName, app.userId);
-                targetPackagesList = sharedPackages.length == 0
-                        ? new String[]{app.info.packageName} : sharedPackages;
-            }
+            final String[] sharedPackages = pmInt.getSharedUserPackagesForPackage(
+                    app.info.packageName, app.userId);
+            final String[] targetPackagesList = sharedPackages.length == 0
+                    ? new String[]{app.info.packageName} : sharedPackages;
 
             final boolean hasAppStorage = hasAppStorage(pmInt, app.info.packageName);
 
@@ -2253,7 +2242,7 @@ public final class ProcessList {
                 bindMountAppsData = false;
             }
 
-            if (!hasAppStorage && !app.isSdkSandbox) {
+            if (!hasAppStorage) {
                 bindMountAppsData = false;
                 pkgDataInfoMap = null;
                 allowlistedAppDataInfoMap = null;
@@ -2329,8 +2318,8 @@ public final class ProcessList {
             if (!regularZygote) {
                 // webview and app zygote don't have the permission to create the nodes
                 if (Process.createProcessGroup(uid, startResult.pid) < 0) {
-                    throw new AssertionError("Unable to create process group for " + app.processName
-                            + " (" + startResult.pid + ")");
+                    Slog.e(ActivityManagerService.TAG, "Unable to create process group for "
+                            + app.processName + " (" + startResult.pid + ")");
                 }
             }
 

@@ -33,8 +33,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
 public class MainInteractionSession extends VoiceInteractionSession
         implements View.OnClickListener {
     static final String TAG = "MainInteractionSession";
@@ -405,7 +403,7 @@ public class MainInteractionSession extends VoiceInteractionSession
     @Override
     public void onRequestPickOption(PickOptionRequest request) {
         Log.i(TAG, "onPickOption: prompt=" + request.getVoicePrompt() + " options="
-                + Arrays.toString(request.getOptions()) + " extras=" + request.getExtras());
+                + request.getOptions() + " extras=" + request.getExtras());
         mConfirmButton.setText("Pick Option");
         mPendingRequest = request;
         setPrompt(request.getVoicePrompt());

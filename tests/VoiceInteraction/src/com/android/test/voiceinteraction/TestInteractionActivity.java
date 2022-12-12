@@ -28,8 +28,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
 public class TestInteractionActivity extends Activity implements View.OnClickListener {
     static final String TAG = "TestInteractionActivity";
 
@@ -242,8 +240,7 @@ public class TestInteractionActivity extends Activity implements View.OnClickLis
         }
         @Override
         public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
-            Log.i(TAG, "Pick result: finished=" + finished
-                    + " selections=" + Arrays.toString(selections)
+            Log.i(TAG, "Pick result: finished=" + finished + " selections=" + selections
                     + " result=" + result);
             StringBuilder sb = new StringBuilder();
             if (finished) {

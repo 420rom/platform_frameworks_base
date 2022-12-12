@@ -1623,11 +1623,8 @@ public class SurfaceView extends View implements ViewRootImpl.SurfaceChangedCall
          */
         @Override
         public void unlockCanvasAndPost(Canvas canvas) {
-            try {
-                mSurface.unlockCanvasAndPost(canvas);
-            } finally {
-                mSurfaceLock.unlock();
-            }
+            mSurface.unlockCanvasAndPost(canvas);
+            mSurfaceLock.unlock();
         }
 
         @Override

@@ -865,6 +865,7 @@ public final class WindowContainerTransaction implements Parcelable {
     }
 
     @Override
+    /** @hide */
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeMap(mChanges);
         dest.writeTypedList(mHierarchyOps);
@@ -873,6 +874,7 @@ public final class WindowContainerTransaction implements Parcelable {
     }
 
     @Override
+    /** @hide */
     public int describeContents() {
         return 0;
     }

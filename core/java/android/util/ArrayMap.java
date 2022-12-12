@@ -23,7 +23,6 @@ import com.android.internal.util.ArrayUtils;
 
 import libcore.util.EmptyArray;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
@@ -232,7 +231,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
                             array[0] = array[1] = null;
                             mTwiceBaseCacheSize--;
                             if (DEBUG) {
-                                Log.d(TAG, "Retrieving 2x cache " + Arrays.toString(mHashes)
+                                Log.d(TAG, "Retrieving 2x cache " + mHashes
                                         + " now have " + mTwiceBaseCacheSize + " entries");
                             }
                             return;
@@ -259,7 +258,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
                             array[0] = array[1] = null;
                             mBaseCacheSize--;
                             if (DEBUG) {
-                                Log.d(TAG, "Retrieving 1x cache " + Arrays.toString(mHashes)
+                                Log.d(TAG, "Retrieving 1x cache " + mHashes
                                         + " now have " + mBaseCacheSize + " entries");
                             }
                             return;
@@ -296,10 +295,8 @@ public final class ArrayMap<K, V> implements Map<K, V> {
                     }
                     mTwiceBaseCache = array;
                     mTwiceBaseCacheSize++;
-                    if (DEBUG) {
-                        Log.d(TAG, "Storing 2x cache " + Arrays.toString(array)
-                                + " now have " + mTwiceBaseCacheSize + " entries");
-                    }
+                    if (DEBUG) Log.d(TAG, "Storing 2x cache " + array
+                            + " now have " + mTwiceBaseCacheSize + " entries");
                 }
             }
         } else if (hashes.length == BASE_SIZE) {
@@ -312,10 +309,8 @@ public final class ArrayMap<K, V> implements Map<K, V> {
                     }
                     mBaseCache = array;
                     mBaseCacheSize++;
-                    if (DEBUG) {
-                        Log.d(TAG, "Storing 1x cache " + Arrays.toString(array)
-                                + " now have " + mBaseCacheSize + " entries");
-                    }
+                    if (DEBUG) Log.d(TAG, "Storing 1x cache " + array
+                            + " now have " + mBaseCacheSize + " entries");
                 }
             }
         }

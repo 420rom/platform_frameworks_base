@@ -6641,7 +6641,7 @@ public class TelephonyManager {
          * list will be provided. If an error occurs, null will be provided unless the onError
          * callback is overridden.
          *
-         * @param cellInfo a list of {@link CellInfo} or an empty list.
+         * @param cellInfo a list of {@link CellInfo}, an empty list, or null.
          *
          * {@see android.telephony.TelephonyManager#getAllCellInfo getAllCellInfo()}
          */
@@ -8970,7 +8970,7 @@ public class TelephonyManager {
      * @param executor The executor through which the callback should be invoked. Since the scan
      *        request may trigger multiple callbacks and they must be invoked in the same order as
      *        they are received by the platform, the user should provide an executor which executes
-     *        tasks one at a time in serial order.
+     *        tasks one at a time in serial order. For example AsyncTask.SERIAL_EXECUTOR.
      * @param callback Returns network scan results or errors.
      * @return A NetworkScan obj which contains a callback which can be used to stop the scan.
      */
@@ -8995,8 +8995,7 @@ public class TelephonyManager {
      * <p>Requires Permission:
      * {@link android.Manifest.permission#MODIFY_PHONE_STATE MODIFY_PHONE_STATE} or that the calling
      * app has carrier privileges (see {@link #hasCarrierPrivileges})
-     * and {@link android.Manifest.permission#ACCESS_FINE_LOCATION} if includeLocationData is
-     * set to {@link #INCLUDE_LOCATION_DATA_FINE}.
+     * and {@link android.Manifest.permission#ACCESS_FINE_LOCATION}.
      *
      * If the system-wide location switch is off, apps may still call this API, with the
      * following constraints:
@@ -9010,21 +9009,19 @@ public class TelephonyManager {
      * </ol>
      *
      * @param includeLocationData Specifies if the caller would like to receive
-     * location related information. If this parameter is set to
-     * {@link #INCLUDE_LOCATION_DATA_FINE} then the application will be checked for
-     * {@link android.Manifest.permission#ACCESS_FINE_LOCATION} permission and available
-     * location related information received during network scan will be sent to the caller.
+     * location related information.
      * @param request Contains all the RAT with bands/channels that need to be scanned.
      * @param executor The executor through which the callback should be invoked. Since the scan
      *        request may trigger multiple callbacks and they must be invoked in the same order as
      *        they are received by the platform, the user should provide an executor which executes
-     *        tasks one at a time in serial order.
+     *        tasks one at a time in serial order. For example AsyncTask.SERIAL_EXECUTOR.
      * @param callback Returns network scan results or errors.
      * @return A NetworkScan obj which contains a callback which can be used to stop the scan.
      */
     @SuppressAutoDoc // Blocked by b/72967236 - no support for carrier privileges
     @RequiresPermission(allOf = {
-            android.Manifest.permission.MODIFY_PHONE_STATE
+            android.Manifest.permission.MODIFY_PHONE_STATE,
+            Manifest.permission.ACCESS_FINE_LOCATION
     })
     public @Nullable NetworkScan requestNetworkScan(
             @IncludeLocationData int includeLocationData,
@@ -9358,8 +9355,7 @@ public class TelephonyManager {
             ALLOWED_NETWORK_TYPES_REASON_USER,
             ALLOWED_NETWORK_TYPES_REASON_POWER,
             ALLOWED_NETWORK_TYPES_REASON_CARRIER,
-            ALLOWED_NETWORK_TYPES_REASON_ENABLE_2G,
-            ALLOWED_NETWORK_TYPES_REASON_USER_RESTRICTIONS,
+            ALLOWED_NETWORK_TYPES_REASON_ENABLE_2G
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface AllowedNetworkTypesReason {
@@ -9398,24 +9394,14 @@ public class TelephonyManager {
     public static final int ALLOWED_NETWORK_TYPES_REASON_ENABLE_2G = 3;
 
     /**
-     * To indicate allowed network type change is requested by an update to the
-     * {@link android.os.UserManager.DISALLOW_CELLULAR_2G} user restriction.
-     *
-     * @hide
-     */
-    @SystemApi
-    public static final int ALLOWED_NETWORK_TYPES_REASON_USER_RESTRICTIONS = 4;
-
-    /**
      * Set the allowed network types of the device and provide the reason triggering the allowed
      * network change.
-     * <p>Requires permission: {@link android.Manifest.permission#MODIFY_PHONE_STATE} or
+     * <p>Requires permission: android.Manifest.MODIFY_PHONE_STATE or
      * that the calling app has carrier privileges (see {@link #hasCarrierPrivileges}).
      *
-     * This can be called for following reasons:
+     * This can be called for following reasons
      * <ol>
-     * <li>Allowed network types control by USER
-     * {@link TelephonyManager#ALLOWED_NETWORK_TYPES_REASON_USER}
+     * <li>Allowed network types control by USER {@link #ALLOWED_NETWORK_TYPES_REASON_USER}
      * <li>Allowed network types control by carrier {@link #ALLOWED_NETWORK_TYPES_REASON_CARRIER}
      * </ol>
      * This API will result in allowing an intersection of allowed network types for all reasons,
@@ -9425,13 +9411,7 @@ public class TelephonyManager {
      * @param allowedNetworkTypes The bitmask of allowed network type
      * @throws IllegalStateException if the Telephony process is not currently available.
      * @throws IllegalArgumentException if invalid AllowedNetworkTypesReason is passed.
-     * @throws SecurityException if the caller does not have the required privileges or if the
-     * caller tries to use one of the following security-based reasons without
-     * {@link android.Manifest.permission#MODIFY_PHONE_STATE} permissions.
-     * <ol>
-     *     <li>{@code TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_ENABLE_2G}</li>
-     *     <li>{@code TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_USER_RESTRICTIONS}</li>
-     * </ol>
+     * @throws SecurityException if the caller does not have the required privileges
      */
     @RequiresPermission(android.Manifest.permission.MODIFY_PHONE_STATE)
     @RequiresFeature(
@@ -9505,7 +9485,6 @@ public class TelephonyManager {
             case TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_POWER:
             case TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_CARRIER:
             case TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_ENABLE_2G:
-            case ALLOWED_NETWORK_TYPES_REASON_USER_RESTRICTIONS:
                 return true;
         }
         return false;
@@ -16214,12 +16193,7 @@ public class TelephonyManager {
      * the appropriate callback method on the callback object and passes the current (updated)
      * values.
      * <p>
-     * Note: Be aware of the permission requirements stated on the {@link TelephonyCallback}
-     * listeners you implement.  Your application must be granted these permissions in order to
-     * register a {@link TelephonyCallback} which requires them; a {@link SecurityException} will be
-     * thrown if you do not hold the required permissions for all {@link TelephonyCallback}
-     * listeners you implement.
-     * <p>
+     *
      * If this TelephonyManager object has been created with {@link #createForSubscriptionId},
      * applies to the given subId. Otherwise, applies to
      * {@link SubscriptionManager#getDefaultSubscriptionId()}. To register events for multiple

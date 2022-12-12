@@ -427,8 +427,6 @@ applications that come with the platform
         <!-- Permission needed for CTS test - ConcurrencyTest#testP2pExternalApprover
              P2P external approver API sets require MANAGE_WIFI_NETWORK_SELECTION permission. -->
         <permission name="android.permission.MANAGE_WIFI_NETWORK_SELECTION" />
-        <!-- Permission needed for CTS test - ConcurrencyTest#testP2pSetWfdInfo -->
-        <permission name="android.permission.CONFIGURE_WIFI_DISPLAY" />
         <!-- Permission required for CTS test CarrierMessagingServiceWrapperTest -->
         <permission name="android.permission.BIND_CARRIER_SERVICES"/>
         <!-- Permission required for CTS test - MusicRecognitionManagerTest -->
@@ -483,8 +481,6 @@ applications that come with the platform
         <permission name="android.permission.NOTIFY_PENDING_SYSTEM_UPDATE" />
         <!-- Permission required for GTS test - GtsAssistIntentTestCases -->
         <permission name="android.permission.MANAGE_VOICE_KEYPHRASES" />
-        <!-- Permission required for test - CellBroadcastComplianceTest -->
-        <permission name="com.android.cellbroadcastservice.FULL_ACCESS_CELL_BROADCAST_HISTORY" />
         <!-- Permission required for ATS test - CarDevicePolicyManagerTest -->
         <permission name="android.permission.LOCK_DEVICE" />
         <!-- Permissions required for CTS test - CtsSafetyCenterTestCases -->

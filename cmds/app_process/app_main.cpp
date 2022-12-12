@@ -334,7 +334,7 @@ int main(int argc, char* const argv[])
 
     if (zygote) {
         runtime.start("com.android.internal.os.ZygoteInit", args, zygote);
-    } else if (!className.isEmpty()) {
+    } else if (className) {
         runtime.start("com.android.internal.os.RuntimeInit", args, zygote);
     } else {
         fprintf(stderr, "Error: no class name or --zygote supplied.\n");

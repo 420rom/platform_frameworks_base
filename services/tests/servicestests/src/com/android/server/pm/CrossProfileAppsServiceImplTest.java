@@ -38,7 +38,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManagerInternal;
 import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.UserHandle;
@@ -48,6 +47,7 @@ import android.permission.PermissionManager;
 import android.platform.test.annotations.Presubmit;
 import android.util.SparseArray;
 
+import com.android.activitycontext.ActivityContext;
 import com.android.internal.util.FunctionalUtils.ThrowingRunnable;
 import com.android.internal.util.FunctionalUtils.ThrowingSupplier;
 import com.android.server.LocalServices;
@@ -611,23 +611,34 @@ public class CrossProfileAppsServiceImplTest {
         mTestInjector.setCallingUserId(PROFILE_OF_PRIMARY_USER);
 
         Bundle options = ActivityOptions.makeOpenCrossProfileAppsAnimation().toBundle();
-        Binder targetTask = new Binder();
-        mCrossProfileAppsServiceImpl.startActivityAsUser(
-                mIApplicationThread,
-                PACKAGE_ONE,
-                FEATURE_ID,
-                ACTIVITY_COMPONENT,
-                UserHandle.of(PRIMARY_USER).getIdentifier(),
-                true,
-                targetTask,
-                options);
+        IBinder result = ActivityContext.getWithContext(activity -> {
+            try {
+                IBinder targetTask = activity.getActivityToken();
+                mCrossProfileAppsServiceImpl.startActivityAsUser(
+                        mIApplicationThread,
+                        PACKAGE_ONE,
+                        FEATURE_ID,
+                        ACTIVITY_COMPONENT,
+                        UserHandle.of(PRIMARY_USER).getIdentifier(),
+                        true,
+                        targetTask,
+                        options);
+                return targetTask;
+            } catch (Exception re) {
+                return null;
+            }
+        });
+        if (result == null) {
+            throw new Exception();
+        }
+
         verify(mActivityTaskManagerInternal)
                 .startActivityAsUser(
                         nullable(IApplicationThread.class),
                         eq(PACKAGE_ONE),
                         eq(FEATURE_ID),
                         any(Intent.class),
-                        eq(targetTask),
+                        eq(result),
                         anyInt(),
                         eq(options),
                         eq(PRIMARY_USER));

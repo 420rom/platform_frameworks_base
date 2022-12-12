@@ -139,19 +139,24 @@ public class SubscriptionManager {
     @UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
     public static final Uri CONTENT_URI = SimInfo.CONTENT_URI;
 
-    private static final String CACHE_KEY_DEFAULT_SUB_ID_PROPERTY =
+    /** @hide */
+    public static final String CACHE_KEY_DEFAULT_SUB_ID_PROPERTY =
             "cache_key.telephony.get_default_sub_id";
 
-    private static final String CACHE_KEY_DEFAULT_DATA_SUB_ID_PROPERTY =
+    /** @hide */
+    public static final String CACHE_KEY_DEFAULT_DATA_SUB_ID_PROPERTY =
             "cache_key.telephony.get_default_data_sub_id";
 
-    private static final String CACHE_KEY_DEFAULT_SMS_SUB_ID_PROPERTY =
+    /** @hide */
+    public static final String CACHE_KEY_DEFAULT_SMS_SUB_ID_PROPERTY =
             "cache_key.telephony.get_default_sms_sub_id";
 
-    private static final String CACHE_KEY_ACTIVE_DATA_SUB_ID_PROPERTY =
+    /** @hide */
+    public static final String CACHE_KEY_ACTIVE_DATA_SUB_ID_PROPERTY =
             "cache_key.telephony.get_active_data_sub_id";
 
-    private static final String CACHE_KEY_SLOT_INDEX_PROPERTY =
+    /** @hide */
+    public static final String CACHE_KEY_SLOT_INDEX_PROPERTY =
             "cache_key.telephony.get_slot_index";
 
     /** @hide */
@@ -3108,9 +3113,8 @@ public class SubscriptionManager {
      * @param callback Callback will be triggered once it succeeds or failed.
      *                 Pass null if don't care about the result.
      *
-     * @throws IllegalStateException when subscription manager service is not available.
-     * @throws SecurityException when clients do not have MODIFY_PHONE_STATE permission.
      * @hide
+     *
      */
     @SystemApi
     @RequiresPermission(android.Manifest.permission.MODIFY_PHONE_STATE)
@@ -3120,9 +3124,7 @@ public class SubscriptionManager {
         if (VDBG) logd("[setPreferredDataSubscriptionId]+ subId:" + subId);
         try {
             ISub iSub = TelephonyManager.getSubscriptionService();
-            if (iSub == null) {
-                throw new IllegalStateException("subscription manager service is null.");
-            }
+            if (iSub == null) return;
 
             ISetOpportunisticDataCallback callbackStub = new ISetOpportunisticDataCallback.Stub() {
                 @Override
@@ -3142,8 +3144,7 @@ public class SubscriptionManager {
             };
             iSub.setPreferredDataSubscriptionId(subId, needValidation, callbackStub);
         } catch (RemoteException ex) {
-            loge("setPreferredDataSubscriptionId RemoteException=" + ex);
-            ex.rethrowFromSystemServer();
+            // ignore it
         }
     }
 
@@ -3961,10 +3962,6 @@ public class SubscriptionManager {
      * on {@link #PHONE_NUMBER_SOURCE_UICC UICC}, the source {@link #PHONE_NUMBER_SOURCE_IMS IMS}
      * may provide one. Or, a carrier may decide to provide the phone number via source
      * {@link #PHONE_NUMBER_SOURCE_CARRIER carrier} if neither source UICC nor IMS is available.
-     *
-     * <p>The availability and correctness of the phone number depends on the underlying source
-     * and the network etc. Additional verification is needed to use this number for
-     * security-related or other sensitive scenarios.
      *
      * @param subscriptionId the subscription ID, or {@link #DEFAULT_SUBSCRIPTION_ID}
      *                       for the default one.

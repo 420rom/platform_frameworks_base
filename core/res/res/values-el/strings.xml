@@ -21,6 +21,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"B"</string>
+    <string name="kilobyteShort" msgid="2214285521564195803">"kB"</string>
+    <string name="megabyteShort" msgid="6649361267635823443">"MB"</string>
+    <string name="gigabyteShort" msgid="7515809460261287991">"GB"</string>
+    <string name="terabyteShort" msgid="1822367128583886496">"TB"</string>
+    <string name="petabyteShort" msgid="5651571254228534832">"PB"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;Χωρίς τίτλο&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"(Δεν υπάρχει τηλεφωνικός αριθμός)"</string>
@@ -1608,7 +1613,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"Τηλεόραση"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"Τηλέφωνο"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"Ηχεία βάσης σύνδεσης"</string>
-    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"Εξωτερική συσκευή"</string>
+    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"Ακουστικά"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"Σύστημα"</string>
@@ -2285,7 +2290,7 @@
     <string name="notification_content_abusive_bg_apps" msgid="5296898075922695259">"Η εφαρμογή <xliff:g id="APP">%1$s</xliff:g> εκτελείται στο παρασκήνιο. Πατήστε για διαχείριση της χρήσης της μπαταρίας."</string>
     <string name="notification_content_long_running_fgs" msgid="8258193410039977101">"Η εφαρμογή <xliff:g id="APP">%1$s</xliff:g> μπορεί να επηρεάσει τη διάρκεια ζωής μπαταρίας. Πατήστε για έλεγχο των ενεργών εφαρμογών."</string>
     <string name="notification_action_check_bg_apps" msgid="4758877443365362532">"Έλεγχος ενεργών εφαρμογών"</string>
-    <string name="vdm_camera_access_denied" product="default" msgid="6102378580971542473">"Δεν είναι δυνατή η πρόσβαση στην κάμερα τηλεφώνου από το <xliff:g id="DEVICE">%1$s</xliff:g>"</string>
+    <string name="vdm_camera_access_denied" product="default" msgid="6102378580971542473">"Δεν είναι δυνατή η πρόσβαση στην κάμερα του τηλεφώνου από τη συσκευή <xliff:g id="DEVICE">%1$s</xliff:g>"</string>
     <string name="vdm_camera_access_denied" product="tablet" msgid="6895968310395249076">"Δεν είναι δυνατή η πρόσβαση στην κάμερα του tablet από τη συσκευή <xliff:g id="DEVICE">%1$s</xliff:g>"</string>
     <string name="vdm_secure_window" msgid="161700398158812314">"Δεν είναι δυνατή η πρόσβαση σε αυτό το στοιχείο κατά τη ροή. Δοκιμάστε στο τηλέφωνό σας."</string>
     <string name="system_locale_title" msgid="711882686834677268">"Προεπιλογή συστήματος"</string>

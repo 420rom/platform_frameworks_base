@@ -3,7 +3,6 @@ package com.android.systemui
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
-import android.util.Log
 import com.android.systemui.dagger.SysUISingleton
 import com.android.systemui.dagger.qualifiers.Application
 import com.android.systemui.dagger.qualifiers.Background
@@ -56,11 +55,7 @@ class ChooserSelector @Inject constructor(
         } else {
             PackageManager.COMPONENT_ENABLED_STATE_DISABLED
         }
-        try {
-            packageManager.setComponentEnabledSetting(chooserComponent, newState, /* flags = */ 0)
-        } catch (e: IllegalArgumentException) {
-            Log.w("ChooserSelector", "Unable to set IntentResolver enabled=" + enabled, e)
-        }
+        packageManager.setComponentEnabledSetting(chooserComponent, newState, /* flags = */ 0)
     }
 
     suspend inline fun awaitCancellation(): Nothing = suspendCancellableCoroutine { }

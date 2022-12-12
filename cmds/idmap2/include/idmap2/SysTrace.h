@@ -17,6 +17,8 @@
 #ifndef IDMAP2_INCLUDE_IDMAP2_SYSTRACE_H_
 #define IDMAP2_INCLUDE_IDMAP2_SYSTRACE_H_
 
+#define ATRACE_TAG ATRACE_TAG_RRO
+
 #include <sstream>
 #include <vector>
 
@@ -27,12 +29,16 @@ namespace android::idmap2::utils {
 
 class ScopedTraceNoStart {
  public:
-  ~ScopedTraceNoStart();
+  ~ScopedTraceNoStart() {
+    ATRACE_END();
+  }
 };
 
 class ScopedTraceMessageHelper {
  public:
-  ~ScopedTraceMessageHelper();
+  ~ScopedTraceMessageHelper() {
+    ATRACE_BEGIN(buffer_.str().c_str());
+  }
 
   std::ostream& stream() {
     return buffer_;
@@ -42,12 +48,9 @@ class ScopedTraceMessageHelper {
   std::ostringstream buffer_;
 };
 
-bool atrace_enabled();
-
 #define SYSTRACE                                               \
   android::idmap2::utils::ScopedTraceNoStart _trace##__LINE__; \
-  android::idmap2::utils::atrace_enabled() \
-  && android::idmap2::utils::ScopedTraceMessageHelper().stream()
+  (ATRACE_ENABLED()) && android::idmap2::utils::ScopedTraceMessageHelper().stream()
 
 #else
 

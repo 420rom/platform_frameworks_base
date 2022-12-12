@@ -21,6 +21,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"B"</string>
+    <string name="kilobyteShort" msgid="2214285521564195803">"kB"</string>
+    <string name="megabyteShort" msgid="6649361267635823443">"MB"</string>
+    <string name="gigabyteShort" msgid="7515809460261287991">"GB"</string>
+    <string name="terabyteShort" msgid="1822367128583886496">"TB"</string>
+    <string name="petabyteShort" msgid="5651571254228534832">"PB"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;Senza nome&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"(Nessun numero di telefono)"</string>
@@ -1609,7 +1614,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"TV"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"Telefono"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"Altoparlanti dock"</string>
-    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"Dispositivo esterno"</string>
+    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"Cuffie audio"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"Sistema"</string>
@@ -1937,7 +1942,7 @@
     <string name="app_blocked_title" msgid="7353262160455028160">"L\'app non è disponibile"</string>
     <string name="app_blocked_message" msgid="542972921087873023">"L\'app <xliff:g id="APP_NAME">%1$s</xliff:g> non è al momento disponibile."</string>
     <string name="app_streaming_blocked_title" msgid="6090945835898766139">"<xliff:g id="ACTIVITY">%1$s</xliff:g> non disponibile"</string>
-    <string name="app_streaming_blocked_title_for_permission_dialog" msgid="4483161748582966785">"Autorizzazione necessaria"</string>
+    <string name="app_streaming_blocked_title_for_permission_dialog" msgid="4483161748582966785">"È necessaria l\'autorizzazione"</string>
     <string name="app_streaming_blocked_title_for_camera_dialog" msgid="3935701653713853065">"Fotocamera non disponibile"</string>
     <string name="app_streaming_blocked_title_for_fingerprint_dialog" msgid="3516853717714141951">"Continua sul telefono"</string>
     <string name="app_streaming_blocked_title_for_microphone_dialog" msgid="544822455127171206">"Microfono non disponibile"</string>
@@ -1953,7 +1958,7 @@
     <string name="app_streaming_blocked_message_for_fingerprint_dialog" product="default" msgid="8552691971910603907">"Questa app richiede maggiore sicurezza. Prova a usare il telefono."</string>
     <string name="app_streaming_blocked_message_for_settings_dialog" product="tv" msgid="820334666354451145">"Non è possibile accedere a questa impostazione su <xliff:g id="DEVICE">%1$s</xliff:g>. Prova a usare il dispositivo Android TV."</string>
     <string name="app_streaming_blocked_message_for_settings_dialog" product="tablet" msgid="3286849551133045896">"Non è possibile accedere a questa impostazione su <xliff:g id="DEVICE">%1$s</xliff:g>. Prova a usare il tablet."</string>
-    <string name="app_streaming_blocked_message_for_settings_dialog" product="default" msgid="6264287556598916295">"Non è possibile accedere su <xliff:g id="DEVICE">%1$s</xliff:g>. Prova a usare il telefono."</string>
+    <string name="app_streaming_blocked_message_for_settings_dialog" product="default" msgid="6264287556598916295">"Non è possibile accedere a questa impostazione su <xliff:g id="DEVICE">%1$s</xliff:g>. Prova a usare il telefono."</string>
     <string name="deprecated_target_sdk_message" msgid="5203207875657579953">"Questa app è stata realizzata per una versione precedente di Android e potrebbe non funzionare correttamente. Prova a verificare la disponibilità di aggiornamenti o contatta lo sviluppatore."</string>
     <string name="deprecated_target_sdk_app_store" msgid="8456784048558808909">"Cerca aggiornamenti"</string>
     <string name="new_sms_notification_title" msgid="6528758221319927107">"Hai nuovi messaggi"</string>

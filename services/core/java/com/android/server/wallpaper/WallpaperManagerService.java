@@ -1337,7 +1337,6 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
                     }
                     FgThread.getHandler().removeCallbacks(mResetRunnable);
                     mContext.getMainThreadHandler().removeCallbacks(mTryToRebindRunnable);
-                    mContext.getMainThreadHandler().removeCallbacks(mDisconnectRunnable);
                 }
             }
         }
@@ -1888,9 +1887,12 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
         }
     }
 
-    private static final Map<Integer, String> sWallpaperType = Map.of(
-            FLAG_SYSTEM, RECORD_FILE,
-            FLAG_LOCK, RECORD_LOCK_FILE);
+    private static final HashMap<Integer, String> sWallpaperType = new HashMap<Integer, String>() {
+        {
+            put(FLAG_SYSTEM, RECORD_FILE);
+            put(FLAG_LOCK, RECORD_LOCK_FILE);
+        }
+    };
 
     private void errorCheck(int userID) {
         sWallpaperType.forEach((type, filename) -> {
@@ -2711,13 +2713,6 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
         checkPermission(android.Manifest.permission.SET_WALLPAPER_DIM_AMOUNT);
         synchronized (mLock) {
             WallpaperData data = mWallpaperMap.get(mCurrentUserId);
-            if (data == null) {
-                data = mWallpaperMap.get(UserHandle.USER_SYSTEM);
-                if (data == null) {
-                    Slog.e(TAG, "getWallpaperDimAmount: wallpaperData is null");
-                    return 0.0f;
-                }
-            }
             return data.mWallpaperDimAmount;
         }
     }

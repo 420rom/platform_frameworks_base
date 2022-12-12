@@ -1935,7 +1935,7 @@ public final class SurfaceControl implements Parcelable {
 
         @Override
         public int hashCode() {
-            return Objects.hash(Arrays.hashCode(supportedDisplayModes), activeDisplayModeId,
+            return Objects.hash(supportedDisplayModes, activeDisplayModeId, activeDisplayModeId,
                     activeColorMode, hdrCapabilities);
         }
     }

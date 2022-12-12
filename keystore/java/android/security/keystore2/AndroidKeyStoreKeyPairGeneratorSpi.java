@@ -16,8 +16,6 @@
 
 package android.security.keystore2;
 
-import static android.security.keystore2.AndroidKeyStoreCipherSpiBase.DEFAULT_MGF1_DIGEST;
-
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.app.ActivityThread;
@@ -52,7 +50,6 @@ import android.system.keystore2.KeyEntryResponse;
 import android.system.keystore2.KeyMetadata;
 import android.system.keystore2.ResponseCode;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.ArraySet;
 import android.util.Log;
 
@@ -648,7 +645,6 @@ public abstract class AndroidKeyStoreKeyPairGeneratorSpi extends KeyPairGenerato
         // {@link android.security.KeyStoreException#RKP_TEMPORARILY_UNAVAILABLE},
         // {@link android.security.KeyStoreException#RKP_SERVER_REFUSED_ISSUANCE},
         // {@link android.security.KeyStoreException#RKP_FETCHING_PENDING_CONNECTIVITY}
-        // {@link android.security.KeyStoreException#RKP_FETCHING_PENDING_SOFTWARE_REBOOT}
         public final int rkpStatus;
         @Nullable
         public final KeyPair keyPair;
@@ -858,13 +854,6 @@ public abstract class AndroidKeyStoreKeyPairGeneratorSpi extends KeyPairGenerato
                                 KeymasterDefs.KM_TAG_ATTESTATION_ID_IMEI,
                                 imei.getBytes(StandardCharsets.UTF_8)
                         ));
-                        final String secondImei = telephonyService.getImei(1);
-                        if (!TextUtils.isEmpty(secondImei)) {
-                            params.add(KeyStore2ParameterUtils.makeBytes(
-                                    KeymasterDefs.KM_TAG_ATTESTATION_ID_SECOND_IMEI,
-                                    secondImei.getBytes(StandardCharsets.UTF_8)
-                            ));
-                        }
                         break;
                     }
                     case AttestationUtils.ID_TYPE_MEID: {
@@ -919,26 +908,6 @@ public abstract class AndroidKeyStoreKeyPairGeneratorSpi extends KeyPairGenerato
             params.add(KeyStore2ParameterUtils.makeEnum(
                     KeymasterDefs.KM_TAG_PADDING, padding
             ));
-            if (padding == KeymasterDefs.KM_PAD_RSA_OAEP) {
-                final boolean[] hasDefaultMgf1DigestBeenAdded = {false};
-                ArrayUtils.forEach(mKeymasterDigests, (digest) -> {
-                    params.add(KeyStore2ParameterUtils.makeEnum(
-                            KeymasterDefs.KM_TAG_RSA_OAEP_MGF_DIGEST, digest
-                    ));
-                    hasDefaultMgf1DigestBeenAdded[0] |=
-                            digest.equals(KeyProperties.Digest.toKeymaster(DEFAULT_MGF1_DIGEST));
-                });
-                /* Because of default MGF1 digest is SHA-1. It has to be added in Key
-                 * characteristics. Otherwise, crypto operations will fail with Incompatible
-                 * MGF1 digest.
-                 */
-                if (!hasDefaultMgf1DigestBeenAdded[0]) {
-                    params.add(KeyStore2ParameterUtils.makeEnum(
-                            KeymasterDefs.KM_TAG_RSA_OAEP_MGF_DIGEST,
-                            KeyProperties.Digest.toKeymaster(DEFAULT_MGF1_DIGEST)
-                    ));
-                }
-            }
         });
         ArrayUtils.forEach(mKeymasterSignaturePaddings, (padding) -> {
             params.add(KeyStore2ParameterUtils.makeEnum(

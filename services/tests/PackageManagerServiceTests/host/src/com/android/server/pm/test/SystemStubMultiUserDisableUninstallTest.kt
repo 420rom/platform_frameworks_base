@@ -628,7 +628,6 @@ class SystemStubMultiUserDisableUninstallTest : BaseHostJUnit4Test() {
             CodePath.SAME, CodePath.DIFFERENT ->
                 throw AssertionError("secondDataPath cannot be a data path")
             CodePath.SYSTEM -> assertThat(codePaths[1]).isEqualTo(stubFile.parent.toString())
-            null -> {}
         }
     }
 

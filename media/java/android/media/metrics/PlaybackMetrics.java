@@ -402,10 +402,9 @@ public final class PlaybackMetrics implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(mMediaDurationMillis, mStreamSource, mStreamType, mPlaybackType,
-                mDrmType, mContentType, mPlayerName, mPlayerVersion,
-                Arrays.hashCode(mExperimentIds), mVideoFramesPlayed, mVideoFramesDropped,
-                mAudioUnderrunCount, mNetworkBytesRead, mLocalBytesRead,
-                mNetworkTransferDurationMillis, Arrays.hashCode(mDrmSessionId));
+                mDrmType, mContentType, mPlayerName, mPlayerVersion, mExperimentIds,
+                mVideoFramesPlayed, mVideoFramesDropped, mAudioUnderrunCount, mNetworkBytesRead,
+                mLocalBytesRead, mNetworkTransferDurationMillis, mDrmSessionId);
     }
 
     @Override

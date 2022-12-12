@@ -26,6 +26,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.storage.StorageManager;
 import android.text.TextUtils;
 
 import com.android.internal.util.Preconditions;
@@ -368,7 +369,7 @@ public class LockscreenCredential implements Parcelable, AutoCloseable {
     @Override
     public int hashCode() {
         // Effective Java — Always override hashCode when you override equals
-        return Objects.hash(mType, Arrays.hashCode(mCredential));
+        return (17 + mType) * 31 + mCredential.hashCode();
     }
 
     @Override

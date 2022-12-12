@@ -767,7 +767,7 @@ public class UiDevice {
         if(root != null) {
             Display display = getAutomatorBridge().getDefaultDisplay();
             Point size = new Point();
-            display.getRealSize(size);
+            display.getSize(size);
             AccessibilityNodeInfoDumper.dumpWindowToFile(root,
                     new File(new File(Environment.getDataDirectory(), "local/tmp"), fileName),
                     display.getRotation(), size.x, size.y);

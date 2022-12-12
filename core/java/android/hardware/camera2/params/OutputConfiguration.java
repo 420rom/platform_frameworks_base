@@ -1293,8 +1293,7 @@ public final class OutputConfiguration implements Parcelable {
                 return false;
             }
             for (int j = 0; j < mSensorPixelModesUsed.size(); j++) {
-                if (!Objects.equals(
-                        mSensorPixelModesUsed.get(j), other.mSensorPixelModesUsed.get(j))) {
+                if (mSensorPixelModesUsed.get(j) != other.mSensorPixelModesUsed.get(j)) {
                     return false;
                 }
             }
