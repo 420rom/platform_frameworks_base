@@ -21,11 +21,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"B"</string>
-    <string name="kilobyteShort" msgid="2214285521564195803">"kB"</string>
-    <string name="megabyteShort" msgid="6649361267635823443">"MB"</string>
-    <string name="gigabyteShort" msgid="7515809460261287991">"GB"</string>
-    <string name="terabyteShort" msgid="1822367128583886496">"TB"</string>
-    <string name="petabyteShort" msgid="5651571254228534832">"PB"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;未命名&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"(沒有電話號碼)"</string>
@@ -1613,7 +1608,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"電視"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"手機"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"插座喇叭"</string>
-    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
+    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"外部裝置"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"耳機"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"系統"</string>
@@ -2051,8 +2046,7 @@
     <string name="log_access_confirmation_allow" msgid="5302517782599389507">"允許存取一次"</string>
     <string name="log_access_confirmation_deny" msgid="7685790957455099845">"不允許"</string>
     <string name="log_access_confirmation_body" product="default" msgid="1806692062668620735">"裝置記錄會記下裝置上的活動。應用程式可透過這些記錄找出並修正問題。\n\n部分記錄可能包含敏感資料，因此請只允許信任的應用程式存取所有裝置記錄。\n\n如果不允許此應用程式存取所有裝置記錄，此應用程式仍能存取自己的記錄，且裝置製造商可能仍可存取裝置上的部分記錄或資料。"</string>
-    <!-- no translation found for log_access_confirmation_body (7379536536425265262) -->
-    <skip />
+    <string name="log_access_confirmation_body" product="tv" msgid="7379536536425265262">"裝置記錄會記下裝置上的活動。應用程式可使用這些記錄找出並修正問題。\n\n有些記錄可能包含敏感資料，因此建議只允許信任的應用程式存取所有裝置記錄。\n\n如果不允許此應用程式存取所有裝置記錄，此應用程式仍能存取自己的記錄。您的裝置製造商可能仍可存取裝置上的一些記錄或資料。\n\n詳情請瀏覽 g.co/android/devicelogs。"</string>
     <string name="log_access_do_not_show_again" msgid="1058690599083091552">"不要再顯示"</string>
     <string name="slices_permission_request" msgid="3677129866636153406">"「<xliff:g id="APP_0">%1$s</xliff:g>」想顯示「<xliff:g id="APP_2">%2$s</xliff:g>」的快訊"</string>
     <string name="screenshot_edit" msgid="7408934887203689207">"編輯"</string>

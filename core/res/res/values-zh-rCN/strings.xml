@@ -21,11 +21,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="202579285008794431">"B"</string>
-    <string name="kilobyteShort" msgid="2214285521564195803">"kB"</string>
-    <string name="megabyteShort" msgid="6649361267635823443">"MB"</string>
-    <string name="gigabyteShort" msgid="7515809460261287991">"GB"</string>
-    <string name="terabyteShort" msgid="1822367128583886496">"TB"</string>
-    <string name="petabyteShort" msgid="5651571254228534832">"PB"</string>
     <string name="fileSizeSuffix" msgid="4233671691980131257">"<xliff:g id="NUMBER">%1$s</xliff:g> <xliff:g id="UNIT">%2$s</xliff:g>"</string>
     <string name="untitled" msgid="3381766946944136678">"&lt;未命名&gt;"</string>
     <string name="emptyPhoneNumber" msgid="5812172618020360048">"（无电话号码）"</string>
@@ -1562,7 +1557,7 @@
     <string name="content_description_sliding_handle" msgid="982510275422590757">"滑动手柄。触摸并按住。"</string>
     <string name="description_target_unlock_tablet" msgid="7431571180065859551">"滑动解锁。"</string>
     <string name="action_bar_home_description" msgid="1501655419158631974">"导航首页"</string>
-    <string name="action_bar_up_description" msgid="6611579697195026932">"向上导航"</string>
+    <string name="action_bar_up_description" msgid="6611579697195026932">"返回"</string>
     <string name="action_menu_overflow_description" msgid="4579536843510088170">"更多选项"</string>
     <string name="action_bar_home_description_format" msgid="5087107531331621803">"%1$s：%2$s"</string>
     <string name="action_bar_home_subtitle_description_format" msgid="4346835454749569826">"%1$s - %2$s：%3$s"</string>
@@ -1613,7 +1608,7 @@
     <string name="default_audio_route_name" product="tv" msgid="4908971385068087367">"电视"</string>
     <string name="default_audio_route_name" product="default" msgid="9213546147739983977">"手机"</string>
     <string name="default_audio_route_name_dock_speakers" msgid="1551166029093995289">"基座扬声器"</string>
-    <string name="default_audio_route_name_hdmi" msgid="5474470558160717850">"HDMI"</string>
+    <string name="default_audio_route_name_external_device" msgid="8124229858618975">"外部设备"</string>
     <string name="default_audio_route_name_headphones" msgid="6954070994792640762">"耳机"</string>
     <string name="default_audio_route_name_usb" msgid="895668743163316932">"USB"</string>
     <string name="default_audio_route_category_name" msgid="5241740395748134483">"系统"</string>
@@ -2051,8 +2046,7 @@
     <string name="log_access_confirmation_allow" msgid="5302517782599389507">"允许访问一次"</string>
     <string name="log_access_confirmation_deny" msgid="7685790957455099845">"不允许"</string>
     <string name="log_access_confirmation_body" product="default" msgid="1806692062668620735">"设备日志会记录设备上发生的活动。应用可以使用这些日志查找和修复问题。\n\n部分日志可能包含敏感信息，因此请仅允许您信任的应用访问所有设备日志。\n\n如果您不授予此应用访问所有设备日志的权限，它仍然可以访问自己的日志。您的设备制造商可能仍然能够访问设备上的部分日志或信息。"</string>
-    <!-- no translation found for log_access_confirmation_body (7379536536425265262) -->
-    <skip />
+    <string name="log_access_confirmation_body" product="tv" msgid="7379536536425265262">"设备日志会记录设备上发生的活动。应用可以使用这些日志查找和修复问题。\n\n部分日志可能包含敏感信息，因此请仅允许您信任的应用访问所有设备日志。\n\n如果您不授予此应用访问所有设备日志的权限，它仍然可以访问自己的日志。您的设备制造商可能仍然能够访问设备上的部分日志或信息。\n\n如需了解详情，请访问 g.co/android/devicelogs。"</string>
     <string name="log_access_do_not_show_again" msgid="1058690599083091552">"不再显示"</string>
     <string name="slices_permission_request" msgid="3677129866636153406">"“<xliff:g id="APP_0">%1$s</xliff:g>”想要显示“<xliff:g id="APP_2">%2$s</xliff:g>”图块"</string>
     <string name="screenshot_edit" msgid="7408934887203689207">"编辑"</string>

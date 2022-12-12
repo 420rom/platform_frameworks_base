@@ -166,8 +166,8 @@ public class BatteryStatsImpl extends BatteryStats {
     // In-memory Parcel magic number, used to detect attempts to unmarshall bad data
     private static final int MAGIC = 0xBA757475; // 'BATSTATS'
 
-    // Current on-disk Parcel version
-    static final int VERSION = 208;
+    // Current on-disk Parcel version. Must be updated when the format of the parcelable changes
+    public static final int VERSION = 209;
 
     // The maximum number of names wakelocks we will keep track of
     // per uid; once the limit is reached, we batch the remaining wakelocks
@@ -882,6 +882,28 @@ public class BatteryStatsImpl extends BatteryStats {
             screenDozeTimer.reset(false, elapsedRealtimeUs);
             for (int i = 0; i < NUM_SCREEN_BRIGHTNESS_BINS; i++) {
                 screenBrightnessTimers[i].reset(false, elapsedRealtimeUs);
+            }
+        }
+
+        /**
+         * Write data to summary parcel
+         */
+        public void writeSummaryToParcel(Parcel out, long elapsedRealtimeUs) {
+            screenOnTimer.writeSummaryFromParcelLocked(out, elapsedRealtimeUs);
+            screenDozeTimer.writeSummaryFromParcelLocked(out, elapsedRealtimeUs);
+            for (int i = 0; i < NUM_SCREEN_BRIGHTNESS_BINS; i++) {
+                screenBrightnessTimers[i].writeSummaryFromParcelLocked(out, elapsedRealtimeUs);
+            }
+        }
+
+        /**
+         * Read data from summary parcel
+         */
+        public void readSummaryFromParcel(Parcel in) {
+            screenOnTimer.readSummaryFromParcelLocked(in);
+            screenDozeTimer.readSummaryFromParcelLocked(in);
+            for (int i = 0; i < NUM_SCREEN_BRIGHTNESS_BINS; i++) {
+                screenBrightnessTimers[i].readSummaryFromParcelLocked(in);
             }
         }
     }
@@ -3634,6 +3656,7 @@ public class BatteryStatsImpl extends BatteryStats {
         public abstract T instantiateObject();
     }
 
+    @SuppressWarnings("ParcelableCreator")
     public static class ControllerActivityCounterImpl extends ControllerActivityCounter
             implements Parcelable {
         private final Clock mClock;
@@ -7912,20 +7935,31 @@ public class BatteryStatsImpl extends BatteryStats {
         synchronized (mModemNetworkLock) {
             if (displayTransport == TRANSPORT_CELLULAR) {
                 mModemIfaces = includeInStringArray(mModemIfaces, iface);
-                if (DEBUG) Slog.d(TAG, "Note mobile iface " + iface + ": " + mModemIfaces);
+                if (DEBUG) {
+                    Slog.d(TAG, "Note mobile iface " + iface + ": "
+                            + Arrays.toString(mModemIfaces));
+                }
             } else {
                 mModemIfaces = excludeFromStringArray(mModemIfaces, iface);
-                if (DEBUG) Slog.d(TAG, "Note non-mobile iface " + iface + ": " + mModemIfaces);
+                if (DEBUG) {
+                    Slog.d(TAG, "Note non-mobile iface " + iface + ": "
+                            + Arrays.toString(mModemIfaces));
+                }
             }
         }
 
         synchronized (mWifiNetworkLock) {
             if (displayTransport == TRANSPORT_WIFI) {
                 mWifiIfaces = includeInStringArray(mWifiIfaces, iface);
-                if (DEBUG) Slog.d(TAG, "Note wifi iface " + iface + ": " + mWifiIfaces);
+                if (DEBUG) {
+                    Slog.d(TAG, "Note wifi iface " + iface + ": " + Arrays.toString(mWifiIfaces));
+                }
             } else {
                 mWifiIfaces = excludeFromStringArray(mWifiIfaces, iface);
-                if (DEBUG) Slog.d(TAG, "Note non-wifi iface " + iface + ": " + mWifiIfaces);
+                if (DEBUG) {
+                    Slog.d(TAG, "Note non-wifi iface " + iface + ": "
+                            + Arrays.toString(mWifiIfaces));
+                }
             }
         }
     }
@@ -14393,7 +14427,7 @@ public class BatteryStatsImpl extends BatteryStats {
             @NonNull CpuDeltaPowerAccumulator accumulator) {
         if (DEBUG_ENERGY) {
             Slog.d(TAG,
-                    "Updating cpu cluster stats: " + clusterChargeUC.toString());
+                    "Updating cpu cluster stats: " + Arrays.toString(clusterChargeUC));
         }
         if (mGlobalMeasuredEnergyStats == null) {
             return;
@@ -17281,6 +17315,10 @@ public class BatteryStatsImpl extends BatteryStats {
         for (int i=0; i<NUM_SCREEN_BRIGHTNESS_BINS; i++) {
             mScreenBrightnessTimer[i].readSummaryFromParcelLocked(in);
         }
+        final int numDisplays = in.readInt();
+        for (int i = 0; i < numDisplays; i++) {
+            mPerDisplayBatteryStats[i].readSummaryFromParcel(in);
+        }
         mInteractive = false;
         mInteractiveTimer.readSummaryFromParcelLocked(in);
         mPhoneOn = false;
@@ -17789,6 +17827,11 @@ public class BatteryStatsImpl extends BatteryStats {
         mScreenDozeTimer.writeSummaryFromParcelLocked(out, nowRealtime);
         for (int i=0; i<NUM_SCREEN_BRIGHTNESS_BINS; i++) {
             mScreenBrightnessTimer[i].writeSummaryFromParcelLocked(out, nowRealtime);
+        }
+        final int numDisplays = mPerDisplayBatteryStats.length;
+        out.writeInt(numDisplays);
+        for (int i = 0; i < numDisplays; i++) {
+            mPerDisplayBatteryStats[i].writeSummaryToParcel(out, nowRealtime);
         }
         mInteractiveTimer.writeSummaryFromParcelLocked(out, nowRealtime);
         mPowerSaveModeEnabledTimer.writeSummaryFromParcelLocked(out, nowRealtime);

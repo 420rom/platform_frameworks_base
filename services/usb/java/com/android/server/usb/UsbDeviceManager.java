@@ -526,6 +526,7 @@ public class UsbDeviceManager implements ActivityTaskManagerInternal.ScreenObser
         // current USB state
         private boolean mHostConnected;
         private boolean mUsbAccessoryConnected;
+        private boolean mInHostModeWithNoAccessoryConnected;
         private boolean mSourcePower;
         private boolean mSinkPower;
         private boolean mConfigured;
@@ -998,6 +999,17 @@ public class UsbDeviceManager implements ActivityTaskManagerInternal.ScreenObser
                     }
 
                     setTrustRestrictUsb();
+                    
+                    if (mHostConnected) {
+                        if (!mUsbAccessoryConnected) {
+                            mInHostModeWithNoAccessoryConnected = true;
+                        } else {
+                            mInHostModeWithNoAccessoryConnected = false;
+                        }
+                    } else {
+                        // if not in host mode, reset value to false
+                        mInHostModeWithNoAccessoryConnected = false;
+                    }
 
                     mAudioAccessorySupported = port.isModeSupported(MODE_AUDIO_ACCESSORY);
 
@@ -1021,6 +1033,12 @@ public class UsbDeviceManager implements ActivityTaskManagerInternal.ScreenObser
 
                     if (DEBUG) {
                         Slog.i(TAG, "HOST_STATE connected:" + mUsbAccessoryConnected);
+                    }
+
+                    if (!devices.hasNext()) {
+                        mInHostModeWithNoAccessoryConnected = true;
+                    } else {
+                        mInHostModeWithNoAccessoryConnected = false;
                     }
 
                     mHideUsbNotification = false;
@@ -1237,7 +1255,8 @@ public class UsbDeviceManager implements ActivityTaskManagerInternal.ScreenObser
 
             // Dont show the notification when connected to a USB peripheral
             // and the link does not support PR_SWAP and DR_SWAP
-            if (mHideUsbNotification && !mSupportsAllCombinations) {
+            if ((mHideUsbNotification || mInHostModeWithNoAccessoryConnected)
+                    && !mSupportsAllCombinations) {
                 if (mUsbNotificationId != 0) {
                     mNotificationManager.cancelAsUser(null, mUsbNotificationId,
                             UserHandle.ALL);

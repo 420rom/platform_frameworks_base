@@ -377,6 +377,7 @@ import com.android.internal.util.function.QuintFunction;
 import com.android.internal.util.function.TriFunction;
 import com.android.internal.util.function.UndecFunction;
 import com.android.server.AlarmManagerInternal;
+import com.android.server.BootReceiver;
 import com.android.server.DeviceIdleInternal;
 import com.android.server.DisplayThread;
 import com.android.server.IntentResolver;
@@ -8178,8 +8179,8 @@ public class ActivityManagerService extends IActivityManager.Stub
             // do this when the system user is not setup since the setup wizard should be the one
             // to handle home activity in this case.
             if (UserManager.isSplitSystemUser() &&
-                    Settings.Secure.getInt(mContext.getContentResolver(),
-                         Settings.Secure.USER_SETUP_COMPLETE, 0) != 0
+                    Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                         Settings.Secure.USER_SETUP_COMPLETE, 0, currentUserId) != 0
                     || SystemProperties.getBoolean(SYSTEM_USER_HOME_NEEDED, false)) {
                 t.traceBegin("enableHomeActivity");
                 ComponentName cName = new ComponentName(mContext, SystemUserHomeActivity.class);
@@ -8808,6 +8809,7 @@ public class ActivityManagerService extends IActivityManager.Stub
      * @param incrementalMetrics metrics for apps installed on Incremental.
      * @param errorId a unique id to append to the dropbox headers.
      */
+    @SuppressWarnings("DoNotCall") // Ignore warning for synchronous to call to worker.run()
     public void addErrorToDropBox(String eventType,
             ProcessRecord process, String processName, String activityShortComponentName,
             String parentShortComponentName, ProcessRecord parentProcess,
@@ -8916,9 +8918,9 @@ public class ActivityManagerService extends IActivityManager.Stub
                     InputStreamReader input = null;
                     try {
                         java.lang.Process logcat = new ProcessBuilder(
-                                // Time out after 10s, but kill logcat with SEGV
+                                // Time out after 10s of inactivity, but kill logcat with SEGV
                                 // so we can investigate why it didn't finish.
-                                "/system/bin/timeout", "-s", "SEGV", "10s",
+                                "/system/bin/timeout", "-i", "-s", "SEGV", "10s",
                                 // Merge several logcat streams, and take the last N lines.
                                 "/system/bin/logcat", "-v", "threadtime", "-b", "events", "-b", "system",
                                 "-b", "main", "-b", "crash", "-t", String.valueOf(lines))
@@ -15286,6 +15288,10 @@ public class ActivityManagerService extends IActivityManager.Stub
                             app.processName, app.toShortString(), cpuLimit, app)) {
                     mHandler.post(() -> {
                         synchronized (ActivityManagerService.this) {
+                            if (app.getThread() == null
+                               || app.mState.getSetProcState() < ActivityManager.PROCESS_STATE_HOME) {
+                                   return;
+                            }
                             app.killLocked("excessive cpu " + cpuTimeUsed + " during "
                                     + uptimeSince + " dur=" + checkDur + " limit=" + cpuLimit,
                                     ApplicationExitInfo.REASON_EXCESSIVE_RESOURCE_USAGE,
@@ -15311,6 +15317,10 @@ public class ActivityManagerService extends IActivityManager.Stub
                             app.processName, r.toString(), cpuLimit, app)) {
                     mHandler.post(() -> {
                         synchronized (ActivityManagerService.this) {
+                            if (app.getThread() == null
+                               || app.mState.getSetProcState() < ActivityManager.PROCESS_STATE_HOME) {
+                                   return;
+                            }
                             mPhantomProcessList.killPhantomProcessGroupLocked(app, r,
                                     ApplicationExitInfo.REASON_EXCESSIVE_RESOURCE_USAGE,
                                     ApplicationExitInfo.SUBREASON_EXCESSIVE_CPU,
@@ -16370,11 +16380,6 @@ public class ActivityManagerService extends IActivityManager.Stub
                 }
             }
         }
-    }
-
-    @Override
-    public void enableBinderTracing() {
-        Binder.enableTracingForUid(Binder.getCallingUid());
     }
 
     @VisibleForTesting
@@ -17824,6 +17829,14 @@ public class ActivityManagerService extends IActivityManager.Stub
      */
     void refreshSettingsCache() {
         mCoreSettingsObserver.onChange(true);
+    }
+
+    /**
+     * Reset the dropbox rate limiter here and in BootReceiver
+     */
+    void resetDropboxRateLimiter() {
+        mDropboxRateLimiter.reset();
+        BootReceiver.resetDropboxRateLimiter();
     }
 
     /**

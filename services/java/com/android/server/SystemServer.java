@@ -186,6 +186,7 @@ import com.android.server.security.AttestationVerificationManagerService;
 import com.android.server.security.FileIntegrityService;
 import com.android.server.security.KeyAttestationApplicationIdProviderService;
 import com.android.server.security.KeyChainSystemService;
+import com.android.server.security.rkp.RemoteProvisioningService;
 import com.android.server.sensorprivacy.SensorPrivacyService;
 import com.android.server.sensors.SensorService;
 import com.android.server.signedconfig.SignedConfigService;
@@ -347,8 +348,6 @@ public final class SystemServer implements Dumpable {
             "com.android.server.systemcaptions.SystemCaptionsManagerService";
     private static final String TEXT_TO_SPEECH_MANAGER_SERVICE_CLASS =
             "com.android.server.texttospeech.TextToSpeechManagerService";
-    private static final String TIME_ZONE_RULES_MANAGER_SERVICE_CLASS =
-            "com.android.server.timezone.RulesManagerService$Lifecycle";
     private static final String IOT_SERVICE_CLASS =
             "com.android.things.server.IoTSystemService";
     private static final String SLICE_MANAGER_SERVICE_CLASS =
@@ -469,6 +468,7 @@ public final class SystemServer implements Dumpable {
     private final long mRuntimeStartUptime;
 
     private static final String START_HIDL_SERVICES = "StartHidlServices";
+    private static final String START_SENSOR_MANAGER_SERVICE = "StartISensorManagerService";
     private static final String START_BLOB_STORE_SERVICE = "startBlobStoreManagerService";
 
     private static final String SYSPROP_START_COUNT = "sys.system_server.start_count";
@@ -486,6 +486,9 @@ public final class SystemServer implements Dumpable {
 
     /** Start the IStats services. This is a blocking call and can take time. */
     private static native void startIStatsService();
+
+    /** Start the ISensorManager service. This is a blocking call and can take time. */
+    private static native void startISensorManagerService();
 
     /**
      * Start the memtrack proxy service.
@@ -1391,9 +1394,14 @@ public final class SystemServer implements Dumpable {
         mSystemServiceManager.startService(BugreportManagerService.class);
         t.traceEnd();
 
-        // Serivce for GPU and GPU driver.
+        // Service for GPU and GPU driver.
         t.traceBegin("GpuService");
         mSystemServiceManager.startService(GpuService.class);
+        t.traceEnd();
+
+        // Handles system process requests for remotely provisioned keys & data.
+        t.traceBegin("StartRemoteProvisioningService");
+        mSystemServiceManager.startService(RemoteProvisioningService.class);
         t.traceEnd();
 
         t.traceEnd(); // startCoreServices
@@ -1600,9 +1608,16 @@ public final class SystemServer implements Dumpable {
             wm.onInitReady();
             t.traceEnd();
 
-            // Start receiving calls from HIDL services. Start in in a separate thread
+            // Start receiving calls from SensorManager services. Start in a separate thread
             // because it need to connect to SensorManager. This has to start
             // after PHASE_WAIT_FOR_SENSOR_SERVICE is done.
+            SystemServerInitThreadPool.submit(() -> {
+                TimingsTraceAndSlog traceLog = TimingsTraceAndSlog.newAsyncLog();
+                traceLog.traceBegin(START_SENSOR_MANAGER_SERVICE);
+                startISensorManagerService();
+                traceLog.traceEnd();
+            }, START_SENSOR_MANAGER_SERVICE);
+
             SystemServerInitThreadPool.submit(() -> {
                 TimingsTraceAndSlog traceLog = TimingsTraceAndSlog.newAsyncLog();
                 traceLog.traceBegin(START_HIDL_SERVICES);
@@ -2301,19 +2316,6 @@ public final class SystemServer implements Dumpable {
                 reportWtf("starting RuntimeService", e);
             }
             t.traceEnd();
-
-            // timezone.RulesManagerService will prevent a device starting up if the chain of trust
-            // required for safe time zone updates might be broken. RuleManagerService cannot do
-            // this check when mOnlyCore == true, so we don't enable the service in this case.
-            // This service requires that JobSchedulerService is already started when it starts.
-            final boolean startRulesManagerService =
-                    !mOnlyCore && context.getResources().getBoolean(
-                            R.bool.config_enableUpdateableTimeZoneRules);
-            if (startRulesManagerService) {
-                t.traceBegin("StartTimeZoneRulesManagerService");
-                mSystemServiceManager.startService(TIME_ZONE_RULES_MANAGER_SERVICE_CLASS);
-                t.traceEnd();
-            }
 
             if (!isWatch && !disableNetworkTime) {
                 t.traceBegin("StartNetworkTimeUpdateService");

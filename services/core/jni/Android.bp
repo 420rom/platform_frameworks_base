@@ -89,6 +89,7 @@ cc_library_static {
 
 cc_defaults {
     name: "libservices.core-libs",
+    defaults: ["android.hardware.graphics.common-ndk_shared"],
     shared_libs: [
         "libadb_pairing_server",
         "libadb_pairing_connection",
@@ -119,7 +120,7 @@ cc_defaults {
         "libutils",
         "libui",
         "libvibratorservice",
-        "PlatformProperties",
+        "libPlatformProperties",
         "libinput",
         "libinputflinger",
         "libinputflinger_base",
@@ -132,6 +133,7 @@ cc_defaults {
         "libschedulerservicehidl",
         "libsensorservice",
         "libsensorservicehidl",
+        "libsensorserviceaidl",
         "libgui",
         "libtimestats_atoms_proto",
         "libusbhost",
@@ -158,7 +160,6 @@ cc_defaults {
         "android.hardware.graphics.bufferqueue@1.0",
         "android.hardware.graphics.bufferqueue@2.0",
         "android.hardware.graphics.common@1.2",
-        "android.hardware.graphics.common-V3-ndk",
         "android.hardware.graphics.mapper@4.0",
         "android.hardware.input.processor-V1-ndk",
         "android.hardware.ir@1.0",
@@ -180,6 +181,7 @@ cc_defaults {
         "android.hidl.token@1.0-utils",
         "android.frameworks.schedulerservice@1.0",
         "android.frameworks.sensorservice@1.0",
+        "android.frameworks.sensorservice-V1-ndk",
         "android.frameworks.stats@1.0",
         "android.frameworks.stats-V1-ndk",
         "android.system.suspend.control-V1-cpp",

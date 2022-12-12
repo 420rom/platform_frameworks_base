@@ -508,6 +508,12 @@
     <!-- Permissions needed for CTS test - CtsLocaleManagerTestCases -->
     <uses-permission android:name="android.permission.READ_APP_SPECIFIC_LOCALES" />
 
+    <!-- Permissions used for manual testing of time detection behavior. -->
+    <uses-permission android:name="android.permission.SUGGEST_MANUAL_TIME" />
+    <uses-permission android:name="android.permission.SUGGEST_TELEPHONY_TIME" />
+    <uses-permission android:name="android.permission.SUGGEST_NETWORK_TIME" />
+    <uses-permission android:name="android.permission.SUGGEST_GNSS_TIME" />
+
     <!-- Permission required for CTS test - android.server.biometrics -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
@@ -549,6 +555,8 @@
     <!-- Permission needed for CTS test - ConcurrencyTest#testP2pExternalApprover
          P2P external approver API sets require MANAGE_WIFI_NETWORK_SELECTION permission. -->
     <uses-permission android:name="android.permission.MANAGE_WIFI_NETWORK_SELECTION" />
+    <!-- Permission needed for CTS test - ConcurrencyTest#testP2pSetWfdInfo -->
+    <uses-permission android:name="android.permission.CONFIGURE_WIFI_DISPLAY" />
 
     <!-- Permission required for CTS tests to enable/disable rate limiting toasts. -->
     <uses-permission android:name="android.permission.MANAGE_TOAST_RATE_LIMITING" />
@@ -649,6 +657,7 @@
 
     <!-- Permission required to run the `vm` tool which manages on-device virtual machines -->
     <uses-permission android:name="android.permission.MANAGE_VIRTUAL_MACHINE" />
+    <uses-permission android:name="android.permission.USE_CUSTOM_VIRTUAL_MACHINE" />
     <uses-permission android:name="android.permission.DEBUG_VIRTUAL_MACHINE" />
 
     <!-- Permission required to run GtsAssistantTestCases -->
@@ -673,6 +682,9 @@
 
     <!-- Permission required for CTS test - Notification test suite -->
     <uses-permission android:name="android.permission.REVOKE_POST_NOTIFICATIONS_WITHOUT_KILL" />
+
+    <!-- Permission required for test - CellBroadcastComplianceTest -->
+    <uses-permission android:name="com.android.cellbroadcastservice.FULL_ACCESS_CELL_BROADCAST_HISTORY" />
 
     <!-- Permission required for CTS test - CaptioningManagerTest -->
     <uses-permission android:name="android.permission.SET_SYSTEM_AUDIO_CAPTION" />

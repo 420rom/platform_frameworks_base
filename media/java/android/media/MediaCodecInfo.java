@@ -1445,7 +1445,7 @@ public final class MediaCodecInfo {
                 sampleRates = new int[] { 8000, 12000, 16000, 24000, 48000 };
                 maxChannels = 255;
             } else if (mime.equalsIgnoreCase(MediaFormat.MIMETYPE_AUDIO_RAW)) {
-                sampleRateRange = Range.create(1, 96000);
+                sampleRateRange = Range.create(1, 192000);
                 bitRates = Range.create(1, 10000000);
                 maxChannels = AudioSystem.OUT_CHANNEL_COUNT_MAX;
             } else if (mime.equalsIgnoreCase(MediaFormat.MIMETYPE_AUDIO_FLAC)) {
@@ -4105,6 +4105,22 @@ public final class MediaCodecInfo {
         public static final int AV1Level71      = 0x200000;
         public static final int AV1Level72      = 0x400000;
         public static final int AV1Level73      = 0x800000;
+
+        /** DTS codec profile for DTS HRA. */
+        @SuppressLint("AllUpper")
+        public static final int DTS_HDProfileHRA = 0x1;
+        /** DTS codec profile for DTS Express. */
+        @SuppressLint("AllUpper")
+        public static final int DTS_HDProfileLBR = 0x2;
+        /** DTS codec profile for DTS-HD Master Audio */
+        @SuppressLint("AllUpper")
+        public static final int DTS_HDProfileMA = 0x4;
+        /** DTS codec profile for DTS:X Profile 1 */
+        @SuppressLint("AllUpper")
+        public static final int DTS_UHDProfileP1 = 0x1;
+        /** DTS codec profile for DTS:X Profile 2 */
+        @SuppressLint("AllUpper")
+        public static final int DTS_UHDProfileP2 = 0x2;
 
         /**
          * The profile of the media content. Depending on the type of media this can be

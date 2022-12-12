@@ -191,12 +191,12 @@ public abstract class PackageManager {
         @VisibleForTesting
         public Property(@NonNull String name, int type,
                 @NonNull String packageName, @Nullable String className) {
-            assert name != null;
-            assert type >= TYPE_BOOLEAN && type <= TYPE_STRING;
-            assert packageName != null;
-            this.mName = name;
+            if (type < TYPE_BOOLEAN || type > TYPE_STRING) {
+                throw new IllegalArgumentException("Invalid type");
+            }
+            this.mName = Objects.requireNonNull(name);
             this.mType = type;
-            this.mPackageName = packageName;
+            this.mPackageName = Objects.requireNonNull(packageName);
             this.mClassName = className;
         }
         /** @hide */
@@ -444,9 +444,8 @@ public abstract class PackageManager {
          */
         public ComponentEnabledSetting(@NonNull ComponentName componentName,
                 @EnabledState int newState, @EnabledFlags int flags) {
-            Objects.nonNull(componentName);
             mPackageName = null;
-            mComponentName = componentName;
+            mComponentName = Objects.requireNonNull(componentName);
             mEnabledState = newState;
             mEnabledFlags = flags;
         }
@@ -462,8 +461,7 @@ public abstract class PackageManager {
          */
         public ComponentEnabledSetting(@NonNull String packageName,
                 @EnabledState int newState, @EnabledFlags int flags) {
-            Objects.nonNull(packageName);
-            mPackageName = packageName;
+            mPackageName = Objects.requireNonNull(packageName);
             mComponentName = null;
             mEnabledState = newState;
             mEnabledFlags = flags;
@@ -2947,6 +2945,18 @@ public abstract class PackageManager {
      */
     @SdkConstant(SdkConstantType.FEATURE)
     public static final String FEATURE_OPENGLES_EXTENSION_PACK = "android.hardware.opengles.aep";
+
+    /**
+     * Feature for {@link #getSystemAvailableFeatures()} and {@link #hasSystemFeature(String)}.
+     * This feature indicates whether device supports
+     * <a href="https://source.android.com/docs/core/virtualization">Android Virtualization Framework</a>.
+     *
+     * @hide
+     */
+    @SystemApi
+    @SdkConstant(SdkConstantType.FEATURE)
+    public static final String FEATURE_VIRTUALIZATION_FRAMEWORK =
+            "android.software.virtualization_framework";
 
     /**
      * Feature for {@link #getSystemAvailableFeatures} and

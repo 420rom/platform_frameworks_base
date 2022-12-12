@@ -64,7 +64,7 @@ public class ArtStatsLogUtils {
         COMPILATION_REASON_MAP.put(PackageManagerService.REASON_FIRST_BOOT, ArtStatsLog.
                 ART_DATUM_REPORTED__COMPILATION_REASON__ART_COMPILATION_REASON_FIRST_BOOT);
         COMPILATION_REASON_MAP.put(PackageManagerService.REASON_BOOT_AFTER_OTA, ArtStatsLog.
-                ART_DATUM_REPORTED__COMPILATION_REASON__ART_COMPILATION_REASON_BOOT);
+                ART_DATUM_REPORTED__COMPILATION_REASON__ART_COMPILATION_REASON_BOOT_AFTER_OTA);
         COMPILATION_REASON_MAP.put(PackageManagerService.REASON_POST_BOOT, ArtStatsLog.
                 ART_DATUM_REPORTED__COMPILATION_REASON__ART_COMPILATION_REASON_POST_BOOT);
         COMPILATION_REASON_MAP.put(PackageManagerService.REASON_INSTALL, ArtStatsLog.
@@ -320,12 +320,15 @@ public class ArtStatsLogUtils {
     public static class BackgroundDexoptJobStatsLogger {
         /** Writes background dexopt job stats to statsd. */
         public void write(@BackgroundDexOptService.Status int status,
-                @JobParameters.StopReason int cancellationReason, long durationMs,
-                long durationIncludingSleepMs) {
-            ArtStatsLog.write(ArtStatsLog.BACKGROUND_DEXOPT_JOB_ENDED,
+                          @JobParameters.StopReason int cancellationReason,
+                          long durationMs) {
+            ArtStatsLog.write(
+                    ArtStatsLog.BACKGROUND_DEXOPT_JOB_ENDED,
                     STATUS_MAP.getOrDefault(status,
                             ArtStatsLog.BACKGROUND_DEXOPT_JOB_ENDED__STATUS__STATUS_UNKNOWN),
-                    cancellationReason, durationMs, durationIncludingSleepMs);
+                    cancellationReason,
+                    durationMs,
+                    0);  // deprecated, used to be durationIncludingSleepMs
         }
     }
 }

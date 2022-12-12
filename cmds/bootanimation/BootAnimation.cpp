@@ -510,7 +510,8 @@ status_t BootAnimation::readyToRun() {
     resolution = limitSurfaceSize(resolution.width, resolution.height);
     // create the native surface
     sp<SurfaceControl> control = session()->createSurface(String8("BootAnimation"),
-            resolution.getWidth(), resolution.getHeight(), PIXEL_FORMAT_RGB_565);
+            resolution.getWidth(), resolution.getHeight(), PIXEL_FORMAT_RGB_565,
+            ISurfaceComposerClient::eOpaque);
 
     SurfaceComposerClient::Transaction t;
 
@@ -1112,6 +1113,11 @@ bool BootAnimation::parseAnimationDesc(Animation& animation)  {
         char start_color_3[7] = "000000";
 
         int nextReadPos;
+
+        if (strlen(l) == 0) {
+            s = ++endl;
+            continue;
+        }
 
         int topLineNumbers = sscanf(l, "%d %d %d %d", &width, &height, &fps, &progress);
         if (topLineNumbers == 3 || topLineNumbers == 4) {
