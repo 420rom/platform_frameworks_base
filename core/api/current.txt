@@ -16887,6 +16887,7 @@ package android.hardware {
     method public int describeContents();
     method public int getFormat();
     method public int getHeight();
+    method public long getId();
     method public int getLayers();
     method public long getUsage();
     method public int getWidth();
@@ -27275,6 +27276,7 @@ package android.net.vcn {
   public final class VcnConfig implements android.os.Parcelable {
     method public int describeContents();
     method @NonNull public java.util.Set<android.net.vcn.VcnGatewayConnectionConfig> getGatewayConnectionConfigs();
+    method @NonNull public java.util.Set<java.lang.Integer> getRestrictedUnderlyingNetworkTransports();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.net.vcn.VcnConfig> CREATOR;
   }
@@ -27283,6 +27285,7 @@ package android.net.vcn {
     ctor public VcnConfig.Builder(@NonNull android.content.Context);
     method @NonNull public android.net.vcn.VcnConfig.Builder addGatewayConnectionConfig(@NonNull android.net.vcn.VcnGatewayConnectionConfig);
     method @NonNull public android.net.vcn.VcnConfig build();
+    method @NonNull public android.net.vcn.VcnConfig.Builder setRestrictedUnderlyingNetworkTransports(@NonNull java.util.Set<java.lang.Integer>);
   }
 
   public final class VcnGatewayConnectionConfig {
@@ -27291,13 +27294,17 @@ package android.net.vcn {
     method @IntRange(from=0x500) public int getMaxMtu();
     method @NonNull public long[] getRetryIntervalsMillis();
     method @NonNull public java.util.List<android.net.vcn.VcnUnderlyingNetworkTemplate> getVcnUnderlyingNetworkPriorities();
+    method public boolean hasGatewayOption(int);
+    field public static final int VCN_GATEWAY_OPTION_ENABLE_DATA_STALL_RECOVERY_WITH_MOBILITY = 0; // 0x0
   }
 
   public static final class VcnGatewayConnectionConfig.Builder {
     ctor public VcnGatewayConnectionConfig.Builder(@NonNull String, @NonNull android.net.ipsec.ike.IkeTunnelConnectionParams);
     method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder addExposedCapability(int);
+    method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder addGatewayOption(int);
     method @NonNull public android.net.vcn.VcnGatewayConnectionConfig build();
     method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder removeExposedCapability(int);
+    method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder removeGatewayOption(int);
     method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder setMaxMtu(@IntRange(from=0x500) int);
     method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder setRetryIntervalsMillis(@NonNull long[]);
     method @NonNull public android.net.vcn.VcnGatewayConnectionConfig.Builder setVcnUnderlyingNetworkPriorities(@NonNull java.util.List<android.net.vcn.VcnUnderlyingNetworkTemplate>);
@@ -37610,6 +37617,11 @@ package android.security.identity {
     ctor public AlreadyPersonalizedException(@NonNull String, @NonNull Throwable);
   }
 
+  public final class AuthenticationKeyMetadata {
+    method @NonNull public java.time.Instant getExpirationDate();
+    method @IntRange(from=0) public int getUsageCount();
+  }
+
   public class CipherSuiteNotSupportedException extends android.security.identity.IdentityCredentialException {
     ctor public CipherSuiteNotSupportedException(@NonNull String);
     ctor public CipherSuiteNotSupportedException(@NonNull String, @NonNull Throwable);
@@ -37640,6 +37652,7 @@ package android.security.identity {
   public abstract class CredentialDataResult {
     method @Nullable public abstract byte[] getDeviceMac();
     method @NonNull public abstract byte[] getDeviceNameSpaces();
+    method @Nullable public byte[] getDeviceSignature();
     method @NonNull public abstract android.security.identity.CredentialDataResult.Entries getDeviceSignedEntries();
     method @NonNull public abstract android.security.identity.CredentialDataResult.Entries getIssuerSignedEntries();
     method @NonNull public abstract byte[] getStaticAuthenticationData();
@@ -37676,13 +37689,15 @@ package android.security.identity {
     method @NonNull public byte[] delete(@NonNull byte[]);
     method @Deprecated @NonNull public abstract byte[] encryptMessageToReader(@NonNull byte[]);
     method @NonNull public abstract java.util.Collection<java.security.cert.X509Certificate> getAuthKeysNeedingCertification();
-    method @NonNull public abstract int[] getAuthenticationDataUsageCount();
+    method @Deprecated @NonNull public abstract int[] getAuthenticationDataUsageCount();
+    method @NonNull public java.util.List<android.security.identity.AuthenticationKeyMetadata> getAuthenticationKeyMetadata();
     method @NonNull public abstract java.util.Collection<java.security.cert.X509Certificate> getCredentialKeyCertificateChain();
     method @Deprecated @NonNull public abstract android.security.identity.ResultData getEntries(@Nullable byte[], @NonNull java.util.Map<java.lang.String,java.util.Collection<java.lang.String>>, @Nullable byte[], @Nullable byte[]) throws android.security.identity.EphemeralPublicKeyNotFoundException, android.security.identity.InvalidReaderSignatureException, android.security.identity.InvalidRequestMessageException, android.security.identity.NoAuthenticationKeyAvailableException, android.security.identity.SessionTranscriptMismatchException;
     method @NonNull public byte[] proveOwnership(@NonNull byte[]);
     method @Deprecated public abstract void setAllowUsingExhaustedKeys(boolean);
     method @Deprecated public void setAllowUsingExpiredKeys(boolean);
-    method public abstract void setAvailableAuthenticationKeys(int, int);
+    method @Deprecated public abstract void setAvailableAuthenticationKeys(int, int);
+    method public void setAvailableAuthenticationKeys(@IntRange(from=0) int, @IntRange(from=1) int, @IntRange(from=0) long);
     method @Deprecated public abstract void setReaderEphemeralPublicKey(@NonNull java.security.PublicKey) throws java.security.InvalidKeyException;
     method @Deprecated public abstract void storeStaticAuthenticationData(@NonNull java.security.cert.X509Certificate, @NonNull byte[]) throws android.security.identity.UnknownAuthenticationKeyException;
     method public void storeStaticAuthenticationData(@NonNull java.security.cert.X509Certificate, @NonNull java.time.Instant, @NonNull byte[]) throws android.security.identity.UnknownAuthenticationKeyException;

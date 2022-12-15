@@ -361,6 +361,51 @@ public class VcnManagementService extends IVcnManagementService.Stub {
         public LocationPermissionChecker newLocationPermissionChecker(@NonNull Context context) {
             return new LocationPermissionChecker(context);
         }
+
+        /** Gets transports that need to be marked as restricted by the VCN from CarrierConfig */
+        @VisibleForTesting(visibility = Visibility.PRIVATE)
+        public Set<Integer> getRestrictedTransportsFromCarrierConfig(
+                ParcelUuid subGrp, TelephonySubscriptionSnapshot lastSnapshot) {
+            if (!Build.IS_ENG && !Build.IS_USERDEBUG) {
+                return RESTRICTED_TRANSPORTS_DEFAULT;
+            }
+
+            final PersistableBundleWrapper carrierConfig =
+                    lastSnapshot.getCarrierConfigForSubGrp(subGrp);
+            if (carrierConfig == null) {
+                return RESTRICTED_TRANSPORTS_DEFAULT;
+            }
+
+            final int[] defaultValue =
+                    RESTRICTED_TRANSPORTS_DEFAULT.stream().mapToInt(i -> i).toArray();
+            final int[] restrictedTransportsArray =
+                    carrierConfig.getIntArray(
+                            VCN_RESTRICTED_TRANSPORTS_INT_ARRAY_KEY,
+                            defaultValue);
+
+            // Convert to a boxed set
+            final Set<Integer> restrictedTransports = new ArraySet<>();
+            for (int transport : restrictedTransportsArray) {
+                restrictedTransports.add(transport);
+            }
+            return restrictedTransports;
+        }
+
+        /** Gets the transports that need to be marked as restricted by the VCN */
+        public Set<Integer> getRestrictedTransports(
+                ParcelUuid subGrp,
+                TelephonySubscriptionSnapshot lastSnapshot,
+                VcnConfig vcnConfig) {
+            final Set<Integer> restrictedTransports = new ArraySet<>();
+            restrictedTransports.addAll(vcnConfig.getRestrictedUnderlyingNetworkTransports());
+
+            // TODO: b/262269892 Remove the ability to configure restricted transports
+            // via CarrierConfig
+            restrictedTransports.addAll(
+                    getRestrictedTransportsFromCarrierConfig(subGrp, lastSnapshot));
+
+            return restrictedTransports;
+        }
     }
 
     /** Notifies the VcnManagementService that external dependencies can be set up. */
@@ -673,6 +718,7 @@ public class VcnManagementService extends IVcnManagementService.Stub {
         if (mVcns.containsKey(subscriptionGroup)) {
             final Vcn vcn = mVcns.get(subscriptionGroup);
             vcn.updateConfig(config);
+            notifyAllPolicyListenersLocked();
         } else {
             // TODO(b/193687515): Support multiple VCNs active at the same time
             if (isActiveSubGroup(subscriptionGroup, mLastSnapshot)) {
@@ -890,7 +936,6 @@ public class VcnManagementService extends IVcnManagementService.Stub {
     }
 
     /** Adds the provided listener for receiving VcnUnderlyingNetworkPolicy updates. */
-    @GuardedBy("mLock")
     @Override
     public void addVcnUnderlyingNetworkPolicyListener(
             @NonNull IVcnUnderlyingNetworkPolicyListener listener) {
@@ -918,7 +963,6 @@ public class VcnManagementService extends IVcnManagementService.Stub {
     }
 
     /** Removes the provided listener from receiving VcnUnderlyingNetworkPolicy updates. */
-    @GuardedBy("mLock")
     @Override
     public void removeVcnUnderlyingNetworkPolicyListener(
             @NonNull IVcnUnderlyingNetworkPolicyListener listener) {
@@ -1008,9 +1052,19 @@ public class VcnManagementService extends IVcnManagementService.Stub {
                         isVcnManagedNetwork = true;
                     }
 
-                    if (ncCopy.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                        // Carrier WiFi always restricted if VCN exists (even in safe mode).
-                        isRestrictedCarrierWifi = true;
+                    final Set<Integer> restrictedTransports = mDeps.getRestrictedTransports(
+                            subGrp, mLastSnapshot, mConfigs.get(subGrp));
+                    for (int restrictedTransport : restrictedTransports) {
+                        if (ncCopy.hasTransport(restrictedTransport)) {
+                            if (restrictedTransport == TRANSPORT_CELLULAR) {
+                                // Only make a cell network as restricted when the VCN is in
+                                // active mode.
+                                isRestricted |= (vcn.getStatus() == VCN_STATUS_CODE_ACTIVE);
+                            } else {
+                                isRestricted = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }

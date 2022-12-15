@@ -74,7 +74,7 @@ final class UpdatableFontDir {
     interface FsverityUtil {
         boolean hasFsverity(String path);
 
-        void setUpFsverity(String path, byte[] pkcs7Signature) throws IOException;
+        void setUpFsverity(String path) throws IOException;
 
         boolean rename(File src, File dest);
     }
@@ -327,8 +327,7 @@ final class UpdatableFontDir {
             try {
                 // Do not parse font file before setting up fs-verity.
                 // setUpFsverity throws IOException if failed.
-                mFsverityUtil.setUpFsverity(tempNewFontFile.getAbsolutePath(),
-                        pkcs7Signature);
+                mFsverityUtil.setUpFsverity(tempNewFontFile.getAbsolutePath());
             } catch (IOException e) {
                 throw new SystemFontException(
                         FontManager.RESULT_ERROR_VERIFICATION_FAILURE,
